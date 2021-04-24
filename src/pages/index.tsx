@@ -1,29 +1,37 @@
 import { useEffect } from 'react';
-import { Header } from '../components/Header';
+import { GetStaticProps } from 'next';
+import { fetchEpisodes } from '../services/api';
 
-export default function Home() {
-  async function getApiResponse() {
-    const api_token = window.localStorage.getItem('@SpotifyToken')
-    const myHeaders = new Headers({
-      "Authorization": `Bearer ${api_token}`,
-    });
-    const initFetch = {
-      method: 'GET',
-      headers: myHeaders,
-    }
-    
-    await fetch('https://api.spotify.com/v1/tracks?ids=2DiuOqMFJcTCEquAFCtjwW,0ONK2veMuvNNHpaKBTiTnA,4c9Py6O1NeuYKbJ8Ok7mTl', initFetch)
-    .then(async (response: any) => {
-      const data = await response.json();
-      console.log(data)
-    })
-  }
+interface Spotify {
+  episodes:  Array<{
+    name: string;
+    id: string;
+    description: string;
+  }>
+}
+
+export default function Home(props: Spotify) {
+  
 
   useEffect(() => {
-    getApiResponse()
+    console.log(props.episodes)
   }, [])
   return (
     <div>Index</div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  let episodes = []
+  await fetchEpisodes()
+  .then(async (response: any) => {
+    const data = await response.json();
+    episodes = data.episodes.items
+  })
+  return {
+    props: {
+      episodes
+    }
+  }
 }
 
