@@ -15,6 +15,7 @@ import { msToTimeString } from '../utils/timeMsToDateString';
 
 //styles
 import styles from '../styles/home.module.scss';
+import { usePlayer } from '../contexts/PlayerContext';
 
 interface Episode {
   id: string;
@@ -34,6 +35,7 @@ interface Spotify {
 }
 
 export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
+  const { play } = usePlayer()
 
   return (
     <div className={styles.homepage}>
@@ -60,7 +62,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   <span>{episode.durationString}</span>
 
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                   <img src="/play-green.svg" alt="Tocar ep"/>
                 </button>
               </li>
