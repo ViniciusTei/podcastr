@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 //types
 import { GetStaticProps } from 'next';
@@ -33,11 +34,6 @@ interface Spotify {
 }
 
 export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
-  
-
-  useEffect(() => {
-    console.log(latestEpisodes)
-  }, [])
 
   return (
     <div className={styles.homepage}>
@@ -55,7 +51,10 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   objectFit="cover"
                 />
                 <div className={styles.episodeDetails}>
-                  <a href="">{episode.title}</a> 
+                  <Link href={`/episode/${episode.id}`}>
+                    <a >{episode.title}</a> 
+                  
+                  </Link>
                   <p>{episode.title}</p>
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationString}</span>
@@ -68,6 +67,54 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
             )
           })}
         </ul>
+      </section>
+
+      <section className={styles.allEpisodes}>
+        <h2>Todos episodios</h2>
+        <table cellSpacing={0}>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th>Duracao</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {allEpisodes.map(episode => {
+              return (
+                <tr key={episode.id}>
+                  <td style={{width: 72 }}>
+                    <Image 
+                      width={120}
+                      height={120}
+                      src={episode.thumbnail}
+                      alt={episode.title}
+                      objectFit="cover"
+                    ></Image>
+                  </td>
+                  <td>
+                    <Link href={`/episode/${episode.id}`}>
+                      <a>{episode.title}</a>
+                    
+                    </Link>
+                  </td>
+                  <td>{episode.members}</td>
+                  <td style={{width: 100}}>{episode.publishedAt}</td>
+                  <td>{episode.durationString}</td>
+                  <td>
+                    <button type="button">
+                      <img src="/play-green.svg" alt=""/>
+                    </button>
+                  </td> 
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+
       </section>
 
     </div>
@@ -98,10 +145,10 @@ export const getStaticProps: GetStaticProps = async () => {
   })
 
   const latestEpisodes = episodes.slice(0, 2);
-  const allEpisdoes = episodes.slice(2, 12)
+  const allEpisodes = episodes.slice(2, 12)
   return {
     props: {
-      allEpisdoes,
+      allEpisodes,
       latestEpisodes
     }
   }
