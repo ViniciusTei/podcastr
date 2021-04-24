@@ -1,12 +1,17 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { fetchEpisodeById } from '../../services/api';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+//api
+import { fetchEpisodeById } from '../../services/api';
+
 //date format
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { msToTimeString } from '../../utils/timeMsToDateString';
-import Image from 'next/image';
 
+//styles
 import styles from './episode.module.scss';
 
 interface Episode {
@@ -25,6 +30,12 @@ interface EpisodeProps {
     episode: Episode
 }
 export default function Episode({episode}: EpisodeProps) {
+    const router = useRouter()
+
+    if(router.isFallback) {
+        return <p>Carregando...</p>
+    }
+    
     return (
         <div className={styles.episode}>
             <div className={styles.thumbnailContainer}>
@@ -58,7 +69,7 @@ export default function Episode({episode}: EpisodeProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
     return {
         paths: [],
-        fallback: 'blocking'
+        fallback: true
     }
 }
 

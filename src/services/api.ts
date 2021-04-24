@@ -1,5 +1,5 @@
 export async function fetchEpisodes() {
-    const spotifyCredentials = "MTM0ODA5ODdhNjhkNDUxN2FlNjhiMmE3ZGZiMTQ1ZDk6NGFjOThkODAzMTNmNGEwZTkzMDZmYzUyYzBiNTM0OWE="
+  const spotifyCredentials = "MTM0ODA5ODdhNjhkNDUxN2FlNjhiMmE3ZGZiMTQ1ZDk6NGFjOThkODAzMTNmNGEwZTkzMDZmYzUyYzBiNTM0OWE="
   
   const myHeaders = new Headers({
     "Content-Type": "application/x-www-form-urlencoded",
@@ -68,8 +68,6 @@ export async function fetchEpisodeById(id: any) {
     method: 'GET',
     headers: myShowHeaders,
   }
-
-  const thshow = "https://api.spotify.com/v1/shows/0r62857CrmcShv6xiqdMGn?market=BR"
  
   return fetch(`https://api.spotify.com/v1/episodes/${id}?market=BR`, initShowFetch)
 }
