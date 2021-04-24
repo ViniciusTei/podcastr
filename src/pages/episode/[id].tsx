@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { fetchEpisodeById } from '../../services/api';
+import Link from 'next/link';
 //date format
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
@@ -27,9 +28,11 @@ export default function Episode({episode}: EpisodeProps) {
     return (
         <div className={styles.episode}>
             <div className={styles.thumbnailContainer}>
-                <button type="button">
-                    <img src="/arrow-left.svg" alt="Voltar"/>
-                </button>
+                <Link href="/">
+                    <button type="button">
+                        <img src="/arrow-left.svg" alt="Voltar"/>
+                    </button>
+                </Link>
                 <Image width={700} height={160} src={episode.thumbnail} objectFit="cover"></Image>
                 <button type="button">
                     <img src="/play.svg" alt="Tocar"/>
@@ -44,7 +47,9 @@ export default function Episode({episode}: EpisodeProps) {
             </header>
 
             <div className={styles.desciption}>
-                {episode.description}
+                <p>
+                    {episode.description}
+                </p>
             </div>
         </div>
     )
