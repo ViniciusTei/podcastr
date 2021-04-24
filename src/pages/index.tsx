@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import Image from 'next/image';
 
 //types
 import { GetStaticProps } from 'next';
+
 //api
 import { fetchEpisodes } from '../services/api';
 
@@ -9,6 +11,9 @@ import { fetchEpisodes } from '../services/api';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { msToTimeString } from '../utils/timeMsToDateString';
+
+//styles
+import styles from '../styles/home.module.scss';
 
 interface Episode {
   id: string;
@@ -19,20 +24,53 @@ interface Episode {
   duration: number
   description: string
   url: string
+  durationString: string;
 }
 
 interface Spotify {
-  episodes:  Array<Episode>
+  allEpisodes:  Array<Episode>
+  latestEpisodes:  Array<Episode>
 }
 
-export default function Home(props: Spotify) {
+export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
   
 
   useEffect(() => {
-    console.log(props.episodes)
+    console.log(latestEpisodes)
   }, [])
+
   return (
-    <div>Index</div>
+    <div className={styles.homepage}>
+      <section className={styles.latestEpisodes}>
+        <h2>Utilms lancamentos</h2>
+        <ul>
+          {latestEpisodes.map(episode => {
+            return (
+              <li key={episode.id}>
+                <Image 
+                  width={192} 
+                  height={192} 
+                  src={episode.thumbnail} 
+                  alt="Imagem do episodio" 
+                  objectFit="cover"
+                />
+                <div className={styles.episodeDetails}>
+                  <a href="">{episode.title}</a> 
+                  <p>{episode.title}</p>
+                  <span>{episode.publishedAt}</span>
+                  <span>{episode.durationString}</span>
+
+                </div>
+                <button type="button">
+                  <img src="/play-green.svg" alt="Tocar ep"/>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+
+    </div>
   )
 }
 
@@ -58,9 +96,13 @@ export const getStaticProps: GetStaticProps = async () => {
 
     }
   })
+
+  const latestEpisodes = episodes.slice(0, 2);
+  const allEpisdoes = episodes.slice(2, 12)
   return {
     props: {
-      episodes
+      allEpisdoes,
+      latestEpisodes
     }
   }
 }
