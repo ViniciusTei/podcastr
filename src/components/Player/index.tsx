@@ -1,44 +1,73 @@
-import styles from './styles.module.scss'
+import Slider from 'rc-slider';
+import Image from 'next/image';
 
 import { usePlayer } from '../../contexts/PlayerContext';
 
+import styles from './styles.module.scss'
+//slider style
+import 'rc-slider/assets/index.css';
 export function Player() {
   const { episodeList, currentEpisodeIndex } = usePlayer()
   const episode = episodeList[currentEpisodeIndex]
-  console.log(episode?.url)
+ 
   return (
     <div className={styles.container}>
       <header>
         <img src="/playing.svg" alt="Tocando agora"/>
-        <strong>Tocando agora {episode?.title}</strong>
+        <strong>Tocando agora</strong>
       </header>
-      <div className={styles.empty}>
-        <strong>Selecione um podcast para ouvir</strong>
-      </div>
-      <footer className={styles.emptyFooter}>
+
+      {episode ? (
+        <div className={styles.currentEpisode}>
+          <Image width={592} height={592} src={episode.thumbnail} objectFit="cover"/>
+          <strong>{episode.title}</strong>
+          <span>{episode.members}</span>
+        </div>
+      ) : (
+        <div className={styles.empty}>
+          <strong>Selecione um podcast para ouvir</strong>
+        </div>
+      )}
+
+      <footer className={!episode ? styles.emptyFooter : ''}>
         <div className={styles.progress}>
             <span>00:00</span>
             <div className={styles.slider}>
 
-              <div className={styles.emptySlider}></div>
+              {episode ? (
+                <Slider
+                  trackStyle={{backgroundColor: '#04D361'}}
+                  railStyle={{backgroundColor: '#9f75ff '}}
+                  handleStyle={{borderColor: '#04D361', borderWidth: 4}}
+                />
+              ) : (
+                <div className={styles.emptySlider}></div>
+              )}
             </div>
             <span>00:00</span>
         </div>
 
+        {episode && (
+          <audio
+            src={episode.url}
+            autoPlay
+          />
+        )}
+
         <div className={styles.buttons}>
-          <button type="button">
+          <button type="button" disabled={!episode}>
             <img src="/shuffle.svg" alt="shuffle"/>
           </button>
-          <button type="button">
+          <button type="button" disabled={!episode}>
             <img src="/play-previous.svg" alt="previous"/>
           </button>
-          <button type="button" className={styles.playBtn}>
+          <button type="button" className={styles.playBtn} disabled={!episode}>
             <img src="/play.svg" alt="play"/>
           </button>
-          <button type="button">
+          <button type="button" disabled={!episode}>
             <img src="/play-next.svg" alt="next"/>
           </button>
-          <button type="button">
+          <button type="button" disabled={!episode}>
             <img src="/repeat.svg" alt="repeat"/>
           </button>
         </div>
