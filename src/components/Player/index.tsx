@@ -7,11 +7,20 @@ import { usePlayer } from '../../contexts/PlayerContext';
 import styles from './styles.module.scss'
 //slider style
 import 'rc-slider/assets/index.css';
+
 export function Player() {
-  const { episodeList, currentEpisodeIndex, isPlaying, togglePlay, setIsPlayingState } = usePlayer()
+  const { 
+    episodeList, 
+    currentEpisodeIndex, 
+    isPlaying, 
+    togglePlay, 
+    setIsPlayingState,
+    playNext,
+    playPrevious
+  } = usePlayer()
+
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
-
 
   useEffect(() => {
     if(!audioRef.current) {
@@ -79,21 +88,21 @@ export function Player() {
           <button type="button" disabled={!episode}>
             <img src="/shuffle.svg" alt="shuffle"/>
           </button>
-          <button type="button" disabled={!episode}>
+          <button onClick={playPrevious} type="button" disabled={!episode} >
             <img src="/play-previous.svg" alt="previous"/>
           </button>
           <button 
             type="button" 
             onClick={togglePlay} 
-            className={styles.playBtn} 
+            className={styles.playButton} 
             disabled={!episode}
             >
             {isPlaying ? <img src="/pause.svg" alt="play"/> : <img src="/play.svg" alt="play"/>}
           </button>
-          <button type="button" disabled={!episode}>
+          <button onClick={playNext} type="button" disabled={!episode}>
             <img src="/play-next.svg" alt="next"/>
           </button>
-          <button type="button" disabled={!episode}>
+          <button type="button" disabled={!episode}  >
             <img src="/repeat.svg" alt="repeat"/>
           </button>
         </div>

@@ -35,21 +35,23 @@ interface Spotify {
 }
 
 export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
-  const { play } = usePlayer()
+  const { playList } = usePlayer()
 
+  const episodeList = [...latestEpisodes, ...allEpisodes]
+  
   return (
     <div className={styles.homepage}>
       <section className={styles.latestEpisodes}>
-        <h2>Utilms lancamentos</h2>
+        <h2>Últimos lançamentos</h2>
         <ul>
-          {latestEpisodes.map(episode => {
+          {latestEpisodes.map((episode, index) => {
             return (
               <li key={episode.id}>
                 <Image 
                   width={192} 
                   height={192} 
                   src={episode.thumbnail} 
-                  alt="Imagem do episodio" 
+                  alt="Imagem do episódio" 
                   objectFit="cover"
                 />
                 <div className={styles.episodeDetails}>
@@ -62,7 +64,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   <span>{episode.durationString}</span>
 
                 </div>
-                <button type="button" onClick={() => play(episode)}>
+                <button type="button" onClick={() => playList(episodeList, index)}>
                   <img src="/play-green.svg" alt="Tocar ep"/>
                 </button>
               </li>
@@ -72,7 +74,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
       </section>
 
       <section className={styles.allEpisodes}>
-        <h2>Todos episodios</h2>
+        <h2>Todos episódios</h2>
         <table cellSpacing={0}>
           <thead>
             <tr>
@@ -80,12 +82,12 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
               <th>Podcast</th>
               <th>Integrantes</th>
               <th>Data</th>
-              <th>Duracao</th>
+              <th>Duração</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {allEpisodes.map(episode => {
+            {allEpisodes.map((episode, index) => {
               return (
                 <tr key={episode.id}>
                   <td style={{width: 72 }}>
@@ -107,7 +109,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   <td style={{width: 100}}>{episode.publishedAt}</td>
                   <td>{episode.durationString}</td>
                   <td>
-                    <button type="button">
+                    <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
                       <img src="/play-green.svg" alt=""/>
                     </button>
                   </td> 
