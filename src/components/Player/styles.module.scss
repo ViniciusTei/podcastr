@@ -22,7 +22,7 @@
 
   footer {
     align-self: stretch;
-    &.emptyFooter {
+    &.emptyFooter .progress {
       opacity: 0.5;
     }
   }
@@ -114,6 +114,7 @@
     &:disabled {
      // cursor: not-allowed; //block cursor
       cursor: default; //default cursor
+      opacity: 0.5;
     }
 
     &:hover:not(disabled) {

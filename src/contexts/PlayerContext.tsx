@@ -10,6 +10,8 @@ interface PlayerContextData  {
     episodeList: Array<Episode>;
     currentEpisodeIndex: number;
     isPlaying: boolean;
+    hasPrevious: boolean;
+    hasNext: boolean;
     play: (episode: Episode) => void
     togglePlay: () => void
     playNext: () => void
@@ -49,22 +51,22 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
         setIsPlaying(state)
     }
 
+    const hasPrevious = currentEpisodeIndex > 0;
+    const hasNext = (currentEpisodeIndex + 1) < episodeList.length
+
     function playNext() {
-        
-        const nextIndex = currentEpisodeIndex + 1
-        if(nextIndex >= episodeList.length) {
+        if(hasNext) {
             return
         }
         
-        setCurrentEpisodeIndex(nextIndex)
+        setCurrentEpisodeIndex(currentEpisodeIndex + 1)
     }
 
     function playPrevious() {
-        const nextIndex = currentEpisodeIndex - 1
-        if(nextIndex == 0) {
+        if(hasPrevious) {
             return
         }
-        setCurrentEpisodeIndex(nextIndex)
+        setCurrentEpisodeIndex(currentEpisodeIndex - 1)
     }
     return (
         <PlayerContext.Provider value={{
@@ -76,7 +78,9 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
             setIsPlayingState,
             playList,
             playPrevious,
-            playNext
+            playNext,
+            hasPrevious,
+            hasNext
         }}>
             {children}
         </PlayerContext.Provider>
