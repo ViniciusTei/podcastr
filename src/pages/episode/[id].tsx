@@ -13,6 +13,7 @@ import { msToTimeString } from '../../utils/timeMsToDateString';
 
 //styles
 import styles from './episode.module.scss';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 interface Episode {
     id: string;
@@ -31,6 +32,7 @@ interface EpisodeProps {
 }
 export default function Episode({episode}: EpisodeProps) {
     const router = useRouter()
+    const { play } = usePlayer();
 
     if(router.isFallback) {
         return <p>Carregando...</p>
@@ -45,7 +47,7 @@ export default function Episode({episode}: EpisodeProps) {
                     </button>
                 </Link>
                 <Image width={700} height={160} src={episode.thumbnail} objectFit="cover"></Image>
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                     <img src="/play.svg" alt="Tocar"/>
                 </button>
             </div>

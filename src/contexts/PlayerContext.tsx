@@ -12,8 +12,10 @@ interface PlayerContextData  {
     isPlaying: boolean;
     hasPrevious: boolean;
     hasNext: boolean;
+    isLooping: boolean;
     play: (episode: Episode) => void
     togglePlay: () => void
+    toggleLooping: () => void
     playNext: () => void
     playPrevious: () => void
     setIsPlayingState: (state: boolean) => void
@@ -30,6 +32,7 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
     const [episodeList, setEpisodeList] = useState([] as Episode[])
     const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isLooping, setIsLooping] = useState(false)
 
     function play(episode: Episode) {
         setEpisodeList([episode])
@@ -47,6 +50,10 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
         setIsPlaying(!isPlaying)
     }
 
+    function toggleLooping() {
+        setIsLooping(!isLooping)
+    }
+
     function setIsPlayingState(state: boolean) {
         setIsPlaying(state)
     }
@@ -56,17 +63,14 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
 
     function playNext() {
         if(hasNext) {
-            return
-        }
-        
-        setCurrentEpisodeIndex(currentEpisodeIndex + 1)
+            setCurrentEpisodeIndex(currentEpisodeIndex + 1)
+        }        
     }
 
     function playPrevious() {
         if(hasPrevious) {
-            return
-        }
-        setCurrentEpisodeIndex(currentEpisodeIndex - 1)
+            setCurrentEpisodeIndex(currentEpisodeIndex - 1)
+        }        
     }
     return (
         <PlayerContext.Provider value={{
@@ -74,7 +78,9 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
             currentEpisodeIndex, 
             play, 
             isPlaying, 
-            togglePlay, 
+            togglePlay,
+            isLooping, 
+            toggleLooping,
             setIsPlayingState,
             playList,
             playPrevious,
