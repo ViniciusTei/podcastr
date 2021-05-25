@@ -9,7 +9,7 @@ import { fetchEpisodeById } from '../../services/api';
 //date format
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
-import { msToTimeString } from '../../utils/timeMsToDateString';
+import { secToTimeString } from '../../utils/timeMsToDateString';
 
 //styles
 import styles from './episode.module.scss';
@@ -90,7 +90,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         members: "Nhock e Igor Seco.",
         publishedAt: format(parseISO(data.release_date), 'd MMM yy', {locale: ptBR}),
         duration: Number(data.duration_ms),
-        durationString: msToTimeString(Number(data.duration_ms)),
+        durationString: secToTimeString(Number(data.duration_ms)),
         description: data.description,
         url: data.audio_preview_url
     }
