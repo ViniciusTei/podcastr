@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ import { fetchEpisodes } from '../services/api';
 //date format
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
-import { msToTimeString } from '../utils/timeMsToDateString';
+import { secToTimeString } from '../utils/timeMsToDateString';
 
 //styles
 import styles from '../styles/home.module.scss';
@@ -41,6 +41,9 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
   
   return (
     <div className={styles.homepage}>
+      <Head>
+        <title>Podcastr</title>
+      </Head>
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
         <ul>
@@ -141,7 +144,7 @@ export const getStaticProps: GetStaticProps = async () => {
       members: "Nhock e Igor Seco.",
       publishedAt: format(parseISO(ep.release_date), 'd MMM yy', {locale: ptBR}),
       duration: Number(ep.duration_ms),
-      durationString: msToTimeString(Number(ep.duration_ms)),
+      durationString: secToTimeString(Number(ep.duration_ms)),
       description: ep.description,
       url: ep.audio_preview_url
 
