@@ -1,73 +1,39 @@
-export async function fetchEpisodes() {
-  const spotifyCredentials = "MTM0ODA5ODdhNjhkNDUxN2FlNjhiMmE3ZGZiMTQ1ZDk6NGFjOThkODAzMTNmNGEwZTkzMDZmYzUyYzBiNTM0OWE="
+
+export class HttpService {
+  private base_url: string;
   
-  const myHeaders = new Headers({
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Authorization": `Basic ${spotifyCredentials}`,
-  });
-  const initFetch = {
-    method: 'POST',
-    headers: myHeaders,
-    body: "grant_type=client_credentials"
+  constructor() {
+    this.base_url = 'https://podclass.herokuapp.com';
   }
 
-  let api_token = ''
+  async fetchEpisodes() {
+  
+    const myShowHeaders = new Headers({
+      "Content-type": "application/json",
+    });
+    
+    const initShowFetch = {
+      method: 'GET',
+      headers: myShowHeaders,
+    }
+   
+    return fetch(`${this.base_url}/episodes`, initShowFetch)
+  }
+  
+  async fetchEpisodeById(id: string | string[]) {
 
-  //Get token
-  await fetch('https://accounts.spotify.com/api/token', initFetch)
-  .then(async (response: any) => {
-    const data = await response.json();
-    //window.localStorage.setItem('@SpotifyToken', data.access_token)
-    api_token = data.access_token
-  })
+    const myShowHeaders = new Headers({
+      "Content-type": "application/json",
+    });
 
-  //get episodes
-  const myShowHeaders = new Headers({
-    "Content-type": "application/json",
-    "Authorization": `Bearer ${api_token}`,
-  });
-  const initShowFetch = {
-    method: 'GET',
-    headers: myShowHeaders,
+    const initShowFetch = {
+      method: 'GET',
+      headers: myShowHeaders,
+    }
+   
+    return fetch(`${this.base_url}/episodes/${id}`, initShowFetch)
   }
 
-  const thshow = "https://api.spotify.com/v1/shows/0r62857CrmcShv6xiqdMGn?market=BR"
- 
-  return fetch(thshow, initShowFetch)
 }
 
-export async function fetchEpisodeById(id: any) {
-  const spotifyCredentials = "MTM0ODA5ODdhNjhkNDUxN2FlNjhiMmE3ZGZiMTQ1ZDk6NGFjOThkODAzMTNmNGEwZTkzMDZmYzUyYzBiNTM0OWE="
-  
-  const myHeaders = new Headers({
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Authorization": `Basic ${spotifyCredentials}`,
-  });
-  const initFetch = {
-    method: 'POST',
-    headers: myHeaders,
-    body: "grant_type=client_credentials"
-  }
 
-  let api_token = ''
-
-  //Get token
-  await fetch('https://accounts.spotify.com/api/token', initFetch)
-  .then(async (response: any) => {
-    const data = await response.json();
-    //window.localStorage.setItem('@SpotifyToken', data.access_token)
-    api_token = data.access_token
-  })
-
-  //get episodes
-  const myShowHeaders = new Headers({
-    "Content-type": "application/json",
-    "Authorization": `Bearer ${api_token}`,
-  });
-  const initShowFetch = {
-    method: 'GET',
-    headers: myShowHeaders,
-  }
- 
-  return fetch(`https://api.spotify.com/v1/episodes/${id}?market=BR`, initShowFetch)
-}

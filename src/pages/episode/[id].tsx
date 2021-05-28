@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 //api
-import { fetchEpisodeById } from '../../services/api';
+import { HttpService } from '../../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -46,7 +46,7 @@ export default function Episode({episode}: EpisodeProps) {
                         <img src="/arrow-left.svg" alt="Voltar"/>
                     </button>
                 </Link>
-                <Image width={700} height={160} src={episode.thumbnail} objectFit="cover"></Image>
+                <Image width={700} height={160} src={episode.thumbnail} objectFit="cover" />
                 <button type="button" onClick={() => play(episode)}>
                     <img src="/play.svg" alt="Tocar"/>
                 </button>
@@ -78,21 +78,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
     const { id } = ctx.params;
     let data = null
-    await fetchEpisodeById(id)
+    const http = new HttpService()
+
+    await http.fetchEpisodeById(id)
         .then(async res => {
             data = await res.json()
         })
-
+    
     const episode = {
         id: data.id,
-        title: data.name,
-        thumbnail: data.images[0].url,
-        members: "Nhock e Igor Seco.",
-        publishedAt: format(parseISO(data.release_date), 'd MMM yy', {locale: ptBR}),
-        duration: Number(data.duration_ms),
-        durationString: secToTimeString(Number(data.duration_ms)),
+        title: data.title,
+        thumbnail: data.thumbnail,
+        members: data.members,
+        publishedAt: format(new Date(data.published), 'd MMM yy', {locale: ptBR}),
+        duration: Number(data.file.length),
+        durationString: secToTimeString(Number(data.file.length)),
         description: data.description,
-        url: data.audio_preview_url
+        url: data.file.href
     }
 
     return {
