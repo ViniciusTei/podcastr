@@ -133,10 +133,11 @@ export const getStaticProps: GetStaticProps = async () => {
   const http = new HttpService()
 
   await http.fetchEpisodes()
-  .then(async (response: any) => {
-    const data = await response.json();
+  .then(async (response) => {
+    const data = response;
     episodes = data.data
   })
+  
   episodes = episodes.map((ep)=> {
    
     return {
@@ -148,7 +149,7 @@ export const getStaticProps: GetStaticProps = async () => {
       duration: 0,
       durationString: secToTimeString(0),
       description: ep.description,
-      url: ep.file.href
+      url: ep.file
 
     }
   })
