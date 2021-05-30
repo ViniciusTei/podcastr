@@ -37,7 +37,7 @@ export class HttpService {
     return fetch(`${this.base_url}/episodes`, initShowFetch).then(response => response.json())
   }
   
-  async fetchEpisodeById(id: string | string[]) {
+  async fetchEpisodeById(id: string | string[]): Promise<EpisodeResponse> {
 
     const myShowHeaders = new Headers({
       "Content-type": "application/json",
@@ -48,7 +48,7 @@ export class HttpService {
       headers: myShowHeaders,
     }
    
-    return fetch(`${this.base_url}/episodes/${id}`, initShowFetch)
+    return fetch(`${this.base_url}/episodes/${id}`, initShowFetch).then(response => response.json())
   }
 
 }

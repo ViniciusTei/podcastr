@@ -82,19 +82,19 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
     await http.fetchEpisodeById(id)
         .then(async res => {
-            data = await res.json()
+            data = res.data[0]
         })
     
     const episode = {
         id: data.id,
         title: data.title,
         thumbnail: data.thumbnail,
-        members: data.members,
+        members: data.members[0].name,
         publishedAt: format(new Date(data.published), 'd MMM yy', {locale: ptBR}),
-        duration: Number(data.file.length),
-        durationString: secToTimeString(Number(data.file.length)),
+        duration: 0,
+        durationString: secToTimeString(0),
         description: data.description,
-        url: data.file.href
+        url: data.file
     }
 
     return {
