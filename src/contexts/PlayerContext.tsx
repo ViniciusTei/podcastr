@@ -71,7 +71,7 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
         setCurrentEpisodeIndex(0)
         setIsPlaying(false)
     }
-
+    
     const hasPrevious = currentEpisodeIndex > 0;
     const hasNext = (currentEpisodeIndex + 1) < episodeList.length
 

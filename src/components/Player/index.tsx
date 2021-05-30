@@ -25,10 +25,12 @@ export function Player() {
     clearPlayerState
   } = usePlayer()
   const [progress, setProgress] = useState(0)
+  const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
 
   function setupProgressListener() {
+    setCurrentAudioMaxDuration(audioRef.current.duration)
     audioRef.current.currentTime = 0;
     audioRef.current.addEventListener('timeupdate', () => {
       setProgress(Math.floor(audioRef.current.currentTime))
@@ -46,6 +48,10 @@ export function Player() {
     } else {
       clearPlayerState()
     }
+  }
+
+  function getAudioDuration() {
+    
   }
 
   useEffect(() => {
@@ -93,14 +99,14 @@ export function Player() {
                   railStyle={{backgroundColor: '#9f75ff '}}
                   handleStyle={{borderColor: '#04D361', borderWidth: 4}}
                   onChange={handleSeek}
-                  max={30}
+                  max={currentAudioMaxDuration}
                   value={progress}
                 />
               ) : (
                 <div className={styles.emptySlider}></div>
               )}
             </div>
-            <span>{secToTimeString(30)}</span>
+            <span>{secToTimeString(currentAudioMaxDuration)}</span>
         </div>
 
         {episode && (

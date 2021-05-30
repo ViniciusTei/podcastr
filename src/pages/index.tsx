@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { GetStaticProps } from 'next';
 
 //api
-import { fetchEpisodes } from '../services/api';
+import { HttpService } from '../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -100,7 +100,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                       src={episode.thumbnail}
                       alt={episode.title}
                       objectFit="cover"
-                    ></Image>
+                    />
                   </td>
                   <td>
                     <Link href={`/episode/${episode.id}`}>
@@ -130,23 +130,26 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
 
 export const getStaticProps: GetStaticProps = async () => {
   let episodes = []
-  await fetchEpisodes()
-  .then(async (response: any) => {
-    const data = await response.json();
-    episodes = data.episodes.items
-  })
+  const http = new HttpService()
 
+  await http.fetchEpisodes()
+  .then(async (response) => {
+    const data = response;
+    episodes = data.data
+  })
+  
   episodes = episodes.map((ep)=> {
+   
     return {
       id: ep.id,
-      title: ep.name,
-      thumbnail: ep.images[0].url,
-      members: "Nhock e Igor Seco.",
-      publishedAt: format(parseISO(ep.release_date), 'd MMM yy', {locale: ptBR}),
-      duration: Number(ep.duration_ms),
-      durationString: secToTimeString(Number(ep.duration_ms)),
+      title: ep.title,
+      thumbnail: ep.thumbnail,
+      members: ep.members[0].name,
+      publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
+      duration: 0,
+      durationString: secToTimeString(0),
       description: ep.description,
-      url: ep.audio_preview_url
+      url: ep.file
 
     }
   })
