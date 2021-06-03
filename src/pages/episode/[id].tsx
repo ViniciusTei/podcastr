@@ -15,6 +15,9 @@ import { secToTimeString } from '../../utils/timeMsToDateString';
 import styles from './episode.module.scss';
 import { usePlayer } from '../../contexts/PlayerContext';
 
+//icons
+import { MdStarBorder } from 'react-icons/md'
+
 interface Episode {
     id: string;
     title: string
@@ -25,6 +28,7 @@ interface Episode {
     description: string
     url: string
     durationString: string;
+    avaliation: number
 }
 
 interface EpisodeProps {
@@ -56,7 +60,7 @@ export default function Episode({episode}: EpisodeProps) {
                 <h1>{episode.title}</h1>
                 <span>{episode.members}</span>
                 <span>{episode.publishedAt}</span>
-                <span>{episode.durationString}</span>
+                <span><MdStarBorder/>{episode.avaliation.toFixed(2)}</span>
             </header>
 
             <div className={styles.desciption}>
@@ -94,7 +98,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         duration: 0,
         durationString: secToTimeString(0),
         description: data.description,
-        url: data.file
+        url: data.file,
+        avaliation: data.avaliation
     }
 
     return {

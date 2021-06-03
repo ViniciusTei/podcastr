@@ -10,6 +10,7 @@ interface Episode {
   thumbnail: string
   description: string
   file: string
+  avaliation: number
 }
 
 interface EpisodeResponse extends Response {
@@ -20,7 +21,7 @@ export class HttpService {
   private base_url: string;
   
   constructor() {
-    this.base_url = 'https://podclass.herokuapp.com';
+    this.base_url = process.env.PRODUCTION ? 'https://podclass.herokuapp.com' : 'http://127.0.0.1:5000';
   }
 
   async fetchEpisodes(): Promise<EpisodeResponse> {

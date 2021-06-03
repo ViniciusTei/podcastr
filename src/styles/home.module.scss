@@ -69,6 +69,10 @@
                         padding-left: 0.5rem;
                         position: relative;
 
+                        svg {
+                            width: .75rem;
+                            height: .75rem;
+                        }
                         &::before {
                             content: "";
                             width: 4px;
@@ -133,6 +137,11 @@
                 width: 2.5rem;
                 height: 2.5rem;
                 border-radius: .5rem;
+            }
+
+            svg {
+                width: .75rem;
+                height: .75rem;
             }
 
             a {
