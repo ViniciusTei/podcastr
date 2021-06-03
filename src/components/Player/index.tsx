@@ -8,6 +8,7 @@ import styles from './styles.module.scss'
 //slider style
 import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
+import { Avaliation } from '../Avaliation';
 
 export function Player() {
   const { 
@@ -50,8 +51,8 @@ export function Player() {
     }
   }
 
-  function getAudioDuration() {
-    
+  function handleAvaliationClick(value: number) {
+    console.log(value)
   }
 
   useEffect(() => {
@@ -81,6 +82,7 @@ export function Player() {
             objectFit="cover"/>
           <strong>{episode.title}</strong>
           <span>{episode.members}</span>
+          <Avaliation rate={episode.avaliation} onClickAvaliation={handleAvaliationClick}/>
         </div>
       ) : (
         <div className={styles.empty}>

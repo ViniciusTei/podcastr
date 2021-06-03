@@ -5,6 +5,7 @@ interface Episode {
     thumbnail: string;
     duration: number;
     url: string;
+    avaliation: number;
 }
 interface PlayerContextData  {
     episodeList: Array<Episode>;
