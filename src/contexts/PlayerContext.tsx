@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 interface Episode {
+    id: string;
     title: string;
     members: string;
     thumbnail: string;
