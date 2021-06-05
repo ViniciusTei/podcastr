@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎧 Podcastr
 
-## Getting Started
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ViniciusTei/podcastr)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/ViniciusTei/podcastr/main?label=build)
+![GitHub issues](https://img.shields.io/github/issues/ViniciusTei/podcastr)
 
-First, run the development server:
+Um app para ouvir podcasts cadastrados a partir de um feed rss.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+> Projeto iniciado com a RocketSeat na NextLevelWeek 5.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📐 Ajustes e melhorias
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- [x] Adicionar login de usuário
+- [ ] Adicionar sub menu para adicionar um novo podcasts
+- [ ] Adicionar tabs para podcasts recomendados
+ 
+ ## ⚡ Utilizando
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+ Voce pode utilizar o app no link [https://podcastr-class.vercel.app/].
 
-## Learn More
+ Ou se preferir siga para siga para a secao a seguir.
 
-To learn more about Next.js, take a look at the following resources:
+ ## 📫 Contribuindo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para contribuir com Podcast, siga estas etapas:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Bifurque este repositório.
+2. Crie um branch: `git checkout -b <nome_branch>`.
+3. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`
+4. Envie para o branch original: `git push origin <nome_do_projeto> / <local>`
+5. Crie a solicitação de pull.
 
-## Deploy on Vercel
+Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Licença
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE.md) para mais detalhes.
