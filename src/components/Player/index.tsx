@@ -24,7 +24,8 @@ export function Player() {
     hasPrevious,
     isLooping,
     toggleLooping,
-    clearPlayerState
+    clearPlayerState,
+    setEpisodeAvaliation
   } = usePlayer()
   const [progress, setProgress] = useState(0)
   const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
@@ -54,8 +55,9 @@ export function Player() {
   }
 
   async function handleAvaliationClick(value: number) {
-    await api.postAvaliation(value, episode.id)
-    .then(() => console.log('Avaliacao completa'))
+    const nota = value + 1
+    await api.postAvaliation(nota, episode.id)
+    .then(() => setEpisodeAvaliation(nota, currentEpisodeIndex))
     .catch(() => console.log('Erro na avaliacao'))
   }
 
