@@ -33,12 +33,12 @@ interface Episode {
   avaliation: number
 }
 
-interface Spotify {
+interface HomeProps {
   allEpisodes:  Array<Episode>
   latestEpisodes:  Array<Episode>
 }
 
-export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
+export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   const { playList } = usePlayer()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
