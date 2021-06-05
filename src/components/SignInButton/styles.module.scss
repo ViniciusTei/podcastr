@@ -1,0 +1,32 @@
+.button {
+    border: 1px solid var(--gray-100);
+    padding: 0 .5rem;
+    background: #fff;
+
+    transition: filter 0.2s;
+    padding: .25rem .5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 200px;
+    min-height: 55px;
+    border-radius: 4px;
+    img {
+        border-radius: 100px;
+    }
+
+    .image {
+        width: 45px;
+        height: 45px;
+    }
+
+    &:hover{
+        filter: brightness(0.9)
+    }
+
+    svg {
+        margin-left: .5rem;
+    }
+}
