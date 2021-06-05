@@ -17,6 +17,9 @@ import { secToTimeString } from '../utils/timeMsToDateString';
 import styles from '../styles/home.module.scss';
 import { usePlayer } from '../contexts/PlayerContext';
 
+//icons
+import { MdStarBorder } from 'react-icons/md'
+
 interface Episode {
   id: string;
   title: string
@@ -27,14 +30,15 @@ interface Episode {
   description: string
   url: string
   durationString: string;
+  avaliation: number
 }
 
-interface Spotify {
+interface HomeProps {
   allEpisodes:  Array<Episode>
   latestEpisodes:  Array<Episode>
 }
 
-export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
+export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   const { playList } = usePlayer()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
@@ -64,7 +68,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   </Link>
                   <p>{episode.title}</p>
                   <span>{episode.publishedAt}</span>
-                  <span>{episode.durationString}</span>
+                  <span><MdStarBorder/>{episode.avaliation}</span>
 
                 </div>
                 <button type="button" onClick={() => playList(episodeList, index)}>
@@ -85,7 +89,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
               <th>Podcast</th>
               <th>Integrantes</th>
               <th>Data</th>
-              <th>Duração</th>
+              <th>Avaliação</th>
               <th></th>
             </tr>
           </thead>
@@ -110,7 +114,7 @@ export default function Home({ allEpisodes, latestEpisodes }: Spotify) {
                   </td>
                   <td>{episode.members}</td>
                   <td style={{width: 100}}>{episode.publishedAt}</td>
-                  <td>{episode.durationString}</td>
+                  <td style={{textAlign: 'center'}}><MdStarBorder/>{episode.avaliation.toFixed(2)}</td>
                   <td>
                     <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
                       <img src="/play-green.svg" alt=""/>
@@ -149,8 +153,8 @@ export const getStaticProps: GetStaticProps = async () => {
       duration: 0,
       durationString: secToTimeString(0),
       description: ep.description,
-      url: ep.file
-
+      url: ep.file,
+      avaliation: ep.avaliation
     }
   })
 

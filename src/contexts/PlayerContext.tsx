@@ -1,10 +1,12 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 interface Episode {
+    id: string;
     title: string;
     members: string;
     thumbnail: string;
     duration: number;
     url: string;
+    avaliation: number;
 }
 interface PlayerContextData  {
     episodeList: Array<Episode>;
@@ -22,7 +24,8 @@ interface PlayerContextData  {
     playPrevious: () => void
     setIsPlayingState: (state: boolean) => void
     playList: (list: Episode[], index: number) => void,
-    clearPlayerState: () => void
+    clearPlayerState: () => void,
+    setEpisodeAvaliation: (rate: number, index: number) => void
 }
 
 const PlayerContext = createContext({} as PlayerContextData)
@@ -89,6 +92,18 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
             setCurrentEpisodeIndex(currentEpisodeIndex - 1)
         }        
     }
+
+    function setEpisodeAvaliation(rate: number, index: number) {
+        const newEpisodeList = episodeList.map((episode, i) => {
+            if(i === index) {
+                episode.avaliation = rate
+            }
+            
+            return episode
+        })
+
+        setEpisodeList(newEpisodeList)
+    }
     return (
         <PlayerContext.Provider value={{
             episodeList, 
@@ -106,7 +121,8 @@ export default function PlayerProvider({children}: { children: ReactNode }) {
             hasNext,
             isShuffle,
             toggleShuffle,
-            clearPlayerState
+            clearPlayerState,
+            setEpisodeAvaliation
         }}>
             {children}
         </PlayerContext.Provider>

@@ -8,6 +8,8 @@ import styles from './styles.module.scss'
 //slider style
 import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
+import { Avaliation } from '../Avaliation';
+import { HttpService } from '../../services/api';
 
 export function Player() {
   const { 
@@ -22,12 +24,14 @@ export function Player() {
     hasPrevious,
     isLooping,
     toggleLooping,
-    clearPlayerState
+    clearPlayerState,
+    setEpisodeAvaliation
   } = usePlayer()
   const [progress, setProgress] = useState(0)
   const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
+  const api = new HttpService()
 
   function setupProgressListener() {
     setCurrentAudioMaxDuration(audioRef.current.duration)
@@ -50,8 +54,11 @@ export function Player() {
     }
   }
 
-  function getAudioDuration() {
-    
+  async function handleAvaliationClick(value: number) {
+    const nota = value + 1
+    await api.postAvaliation(nota, episode.id)
+    .then(() => setEpisodeAvaliation(nota, currentEpisodeIndex))
+    .catch(() => console.log('Erro na avaliacao'))
   }
 
   useEffect(() => {
@@ -81,6 +88,7 @@ export function Player() {
             objectFit="cover"/>
           <strong>{episode.title}</strong>
           <span>{episode.members}</span>
+          <Avaliation rate={episode.avaliation} onClickAvaliation={handleAvaliationClick}/>
         </div>
       ) : (
         <div className={styles.empty}>

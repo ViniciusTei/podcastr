@@ -8,15 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@types/spotify-api": "0.0.8",
     "date-fns": "^2.21.1",
     "next": "10.1.3",
+    "next-auth": "^3.25.0",
     "rc-slider": "^9.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
     "sass": "^1.32.11"
   },
   "devDependencies": {
+    "@types/next-auth": "^3.15.0",
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
     "typescript": "^4.2.4"
