@@ -154,7 +154,7 @@ export const getStaticProps: GetStaticProps = async () => {
       durationString: secToTimeString(0),
       description: ep.description,
       url: ep.file,
-      avaliation: ep.avaliation
+      avaliation: ep.avaliation || 0
     }
   })
 

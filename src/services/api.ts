@@ -10,7 +10,7 @@ interface Episode {
   thumbnail: string
   description: string
   file: string
-  avaliation: number
+  avaliation?: number
 }
 
 interface EpisodeResponse extends Response {
