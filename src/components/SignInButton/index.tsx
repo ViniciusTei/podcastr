@@ -37,7 +37,7 @@ export function SignInButton() {
             className={styles.button}
             onClick={handleButtonClick}
             >
-            <span>
+            <span className={styles.unlloged}>
                 Entre com
                 <FaGoogle color="#4285F4"/>
             </span>
