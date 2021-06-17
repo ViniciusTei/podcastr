@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 //types
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 
 //api
 import { api } from '../services/api';
@@ -19,6 +19,7 @@ import { usePlayer } from '../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
+import { getSession } from 'next-auth/client';
 
 interface Episode {
   id: string;
@@ -132,15 +133,12 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   let episodes = []
-  const http = await api.post('/podcasts', {feed_url: 'http://example.com'})
 
-  // await http.fetchEpisodes()
-  // .then(async (response) => {
-  //   const data = response;
-  //   episodes = data.data
-  // })
+  const response = await api.get('/podcasts')
+  console.log(response.data)
+  episodes = response.data.podcast
   
   // episodes = episodes.map((ep)=> {
    
