@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
+import firestore from '../../../services/firebase'
+
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
@@ -11,9 +13,28 @@ export default NextAuth({
     // ...add more providers here
   ],
   callbacks: {
+    async session(session) {
+      const usersRef = firestore.collection('users');
+      const snapshot = await usersRef.where('email', '==', session.user.email).get();
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }  
+
+      return {
+        ...session
+      }
+    },
     async signIn(user, account, profile) {
         if (user) {
-            console.log(user)
+          const usersRef = firestore.collection('users');
+          const snapshot = await usersRef.where('email', '==', user.email).get();
+
+          if (snapshot.empty) {
+            await usersRef.add(user)
+            
+          } 
+          
           return true
         } else {
           return false

@@ -136,27 +136,27 @@ export const getStaticProps: GetStaticProps = async () => {
   let episodes = []
   const http = new HttpService()
 
-  await http.fetchEpisodes()
-  .then(async (response) => {
-    const data = response;
-    episodes = data.data
-  })
+  // await http.fetchEpisodes()
+  // .then(async (response) => {
+  //   const data = response;
+  //   episodes = data.data
+  // })
   
-  episodes = episodes.map((ep)=> {
+  // episodes = episodes.map((ep)=> {
    
-    return {
-      id: ep.id,
-      title: ep.title,
-      thumbnail: ep.thumbnail,
-      members: ep.members[0].name,
-      publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
-      duration: 0,
-      durationString: secToTimeString(0),
-      description: ep.description,
-      url: ep.file,
-      avaliation: ep.avaliation || 0
-    }
-  })
+  //   return {
+  //     id: ep.id,
+  //     title: ep.title,
+  //     thumbnail: ep.thumbnail,
+  //     members: ep.members[0].name,
+  //     publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
+  //     duration: 0,
+  //     durationString: secToTimeString(0),
+  //     description: ep.description,
+  //     url: ep.file,
+  //     avaliation: ep.avaliation || 0
+  //   }
+  // })
 
   const latestEpisodes = episodes.slice(0, 2);
   const allEpisodes = episodes.slice(2, 12)

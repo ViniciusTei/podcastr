@@ -34,7 +34,7 @@ export class HttpService {
       headers: this.myShowHeaders,
     }
    
-    return fetch(`${this.base_url}/episodes`, initShowFetch).then(response => response.json())
+    return 
   }
   
   async fetchEpisodeById(id: string | string[]): Promise<EpisodeResponse> {
@@ -44,7 +44,7 @@ export class HttpService {
       headers: this.myShowHeaders,
     }
    
-    return fetch(`${this.base_url}/episodes/${id}`, initShowFetch).then(response => response.json())
+    return null
   }
 
   async postAvaliation(rate: number, episodeId: string) {
@@ -59,7 +59,7 @@ export class HttpService {
       body: JSON.stringify(body)
     }
 
-    return fetch(`${this.base_url}/avaliation`, initShowFetch).then(response => response.json())
+    return []
   }
 
 }
