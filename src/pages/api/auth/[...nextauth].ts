@@ -21,8 +21,13 @@ export default NextAuth({
         return;
       }  
 
+      let userId = ''
+      
+      snapshot.forEach(doc => userId = doc.id)
+
       return {
-        ...session
+        ...session,
+        userId
       }
     },
     async signIn(user, account, profile) {
@@ -34,7 +39,7 @@ export default NextAuth({
             await usersRef.add(user)
             
           } 
-          
+
           return true
         } else {
           return false
