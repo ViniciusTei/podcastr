@@ -9,7 +9,7 @@ import styles from './styles.module.scss'
 import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
 import { Avaliation } from '../Avaliation';
-import { HttpService } from '../../services/api';
+// import { HttpService } from '../../services/api';
 
 export function Player() {
   const { 
@@ -31,7 +31,7 @@ export function Player() {
   const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
-  const api = new HttpService()
+  // const api = new HttpService()
 
   function setupProgressListener() {
     setCurrentAudioMaxDuration(audioRef.current.duration)
@@ -56,9 +56,9 @@ export function Player() {
 
   async function handleAvaliationClick(value: number) {
     const nota = value + 1
-    await api.postAvaliation(nota, episode.id)
-    .then(() => setEpisodeAvaliation(nota, currentEpisodeIndex))
-    .catch(() => console.log('Erro na avaliacao'))
+    // await api.postAvaliation(nota, episode.id)
+    // .then(() => setEpisodeAvaliation(nota, currentEpisodeIndex))
+    // .catch(() => console.log('Erro na avaliacao'))
   }
 
   useEffect(() => {

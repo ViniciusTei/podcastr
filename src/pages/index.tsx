@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { GetStaticProps } from 'next';
 
 //api
-import { HttpService } from '../services/api';
+import { api } from '../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -134,7 +134,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   let episodes = []
-  const http = new HttpService()
+  const http = await api.post('/podcasts', {feed_url: 'http://example.com'})
 
   // await http.fetchEpisodes()
   // .then(async (response) => {

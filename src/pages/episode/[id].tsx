@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 //api
-import { HttpService } from '../../services/api';
+// import { HttpService } from '../../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -82,7 +82,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
     const { id } = ctx.params;
     let data = null
-    const http = new HttpService()
+    // const http = new HttpService()
 
     // await http.fetchEpisodeById(id)
     //     .then(async res => {
