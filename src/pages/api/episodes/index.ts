@@ -45,10 +45,14 @@ export default async(request: NextApiRequest, response: NextApiResponse) => {
         
         const feed = await parse(podcast[0].feed_rss)
 
-        const episodes: Episode[] = []
+        let episodes: Episode[] = []
         const episodesRef = firestore.collection('episodes')
-        const episodesSnapshot = await episodesRef.where('podcast_id', '==', podcast[0].id).get()
-        episodesSnapshot.forEach(doc => {
+        const episodesSnapshot = await episodesRef
+            .where('podcast_id', '==', podcast[0].id)
+            .orderBy('published', 'desc')
+            .get()
+        
+            episodesSnapshot.forEach(doc => {
             episodes.push({
                 id: doc.id,
                 ...doc.data() as any

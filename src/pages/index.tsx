@@ -137,8 +137,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   let episodes = []
 
   const response = await api.get('/episodes')
-  episodes = response.data.data.map((ep)=> {
-   
+  episodes = response.data.data.map((ep, epIdx)=> {
+   if(response.data.data.indexOf(ep) == epIdx) {
     return {
       id: ep.id,
       title: ep.title,
@@ -151,6 +151,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       url: ep.link,
       avaliation: ep.avaliation || 0
     }
+   }
+    
   })
 
   const latestEpisodes = episodes.slice(0, 2);
