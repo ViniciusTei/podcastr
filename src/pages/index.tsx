@@ -136,9 +136,9 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
 export const getServerSideProps: GetServerSideProps = async () => {
   let episodes = []
 
-  const response = await api.get('/podcasts')
+  const response = await api.get('/episodes')
   console.log(response.data)
-  episodes = response.data.podcast
+  // episodes = response.data.podcast
   
   // episodes = episodes.map((ep)=> {
    
