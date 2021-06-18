@@ -137,27 +137,24 @@ export const getServerSideProps: GetServerSideProps = async () => {
   let episodes = []
 
   const response = await api.get('/episodes')
-  console.log(response.data)
-  // episodes = response.data.podcast
-  
-  // episodes = episodes.map((ep)=> {
+  episodes = response.data.data.map((ep)=> {
    
-  //   return {
-  //     id: ep.id,
-  //     title: ep.title,
-  //     thumbnail: ep.thumbnail,
-  //     members: ep.members[0].name,
-  //     publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
-  //     duration: 0,
-  //     durationString: secToTimeString(0),
-  //     description: ep.description,
-  //     url: ep.file,
-  //     avaliation: ep.avaliation || 0
-  //   }
-  // })
+    return {
+      id: ep.id,
+      title: ep.title,
+      thumbnail: ep.image,
+      members: "Banza",
+      publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
+      duration: 0,
+      durationString: secToTimeString(0),
+      description: ep.description,
+      url: ep.link,
+      avaliation: ep.avaliation || 0
+    }
+  })
 
   const latestEpisodes = episodes.slice(0, 2);
-  const allEpisodes = episodes.slice(2, 12)
+  const allEpisodes = episodes.slice(2, episodes.length)
   return {
     props: {
       allEpisodes,

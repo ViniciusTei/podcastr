@@ -15,7 +15,8 @@ interface Podcast {
 }
 
 interface Episode {
-    published: Date;
+    id: string;
+    published: string;
     title: string;
     description: string;
     link: string;
@@ -48,7 +49,10 @@ export default async(request: NextApiRequest, response: NextApiResponse) => {
         const episodesRef = firestore.collection('episodes')
         const episodesSnapshot = await episodesRef.where('podcast_id', '==', podcast[0].id).get()
         episodesSnapshot.forEach(doc => {
-            episodes.push(doc.data() as Episode)
+            episodes.push({
+                id: doc.id,
+                ...doc.data() as any
+            })
         })
         // let iterator = 0
         
