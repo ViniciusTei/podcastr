@@ -36,7 +36,13 @@ export default NextAuth({
           const snapshot = await usersRef.where('email', '==', user.email).get();
 
           if (snapshot.empty) {
-            await usersRef.add(user)
+            try {
+              await usersRef.add(user)
+              
+            } catch (error) {
+              console.log(error)
+              return false
+            }
             
           } 
 
