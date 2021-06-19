@@ -71,8 +71,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                 podcast.push(doc.data())
             })
     
-            console.log(podcast)
-    
             response.status(200).json({
                 data: {
                     podcast

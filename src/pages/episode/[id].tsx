@@ -17,6 +17,7 @@ import { usePlayer } from '../../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
+import { api } from '../../services/api';
 
 interface Episode {
     id: string;
@@ -81,30 +82,39 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
     const { id } = ctx.params;
-    let data = null
+    let ep = null
     // const http = new HttpService()
 
-    // await http.fetchEpisodeById(id)
-    //     .then(async res => {
-    //         data = res.data[0]
-    //     })
+    await api.get(`/episodes/${id}`)
+        .then(async res => {
+            ep = res.data.episode
+        })
+
+    if (!ep) {
+        return {
+            redirect: {
+            destination: '/',
+            permanent: false,
+            },
+        }
+    }
     
-    // const episode = {
-    //     id: data.id,
-    //     title: data.title,
-    //     thumbnail: data.thumbnail,
-    //     members: data.members[0].name,
-    //     publishedAt: format(new Date(data.published), 'd MMM yy', {locale: ptBR}),
-    //     duration: 0,
-    //     durationString: secToTimeString(0),
-    //     description: data.description,
-    //     url: data.file,
-    //     avaliation: data.avaliation
-    // }
+    const episode = {
+        id: ep.id,
+        title: ep.title,
+        thumbnail: ep.image,
+        members: "Banza",
+        publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
+        duration: 0,
+        durationString: secToTimeString(0),
+        description: ep.description,
+        url: ep.link,
+        avaliation: ep.avaliation || 0
+    }
 
     return {
         props: {
-            
+            episode
         }
     }
 }
