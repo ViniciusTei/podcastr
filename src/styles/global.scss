@@ -66,3 +66,22 @@ button {
   cursor: pointer;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--gray-50); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--gray-500); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-200); 
+}
