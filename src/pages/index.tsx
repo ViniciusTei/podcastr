@@ -50,6 +50,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
       <Head>
         <title>Podcastr</title>
       </Head>
+      <div className={styles.episodesPlaylist}>
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
         <ul>
@@ -129,6 +130,8 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
         </table>
 
       </section>
+      </div>
+     
       <Player/>
     </div>
   )
