@@ -1,18 +1,30 @@
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Loading } from '../components/Loading';
 import styles from '../styles/unsigned.module.scss';
 
 export default function Home() {
     const [session] = useSession();
+    const [loading, setLoading] = useState(false)
     const router = useRouter();
 
     useEffect(() => {
         if(session) {
+            setLoading(true)
             console.log('redirect')
             router.push('/')
         }
     }, [session])
+
+    if(loading) {
+        return (
+            <div className={styles.pageContainer} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+
+                <Loading/>
+            </div>
+        )
+    }
     
     return (
         <div className={styles.pageContainer}>
