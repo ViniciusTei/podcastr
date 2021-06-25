@@ -34,6 +34,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             description: feed.description,
             last_published: feed.items[0].pubDate,
             feed_rss: feed_url,
+            link: feed.link,
             user: userId
         }
 
@@ -43,7 +44,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             return {
                 published: new Date(item.pubDate || ''),
                 title: item.title! ,
-                description: item.summary?.toString() || '',
+                description: item.contentSnippet || '',
                 link: item.enclosure!.url,
                 image: item.itunes.image,
                 podcast_id: podcastResponse.id

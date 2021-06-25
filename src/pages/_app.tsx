@@ -7,7 +7,6 @@ import styles from '../styles/app.module.scss';
 
 //components
 import { Header } from '../components/Header';
-import { Player } from '../components/Player';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,7 +17,6 @@ function MyApp({ Component, pageProps }) {
             <Header></Header>
             <Component {...pageProps} />
           </main>
-          <Player></Player>
         </div>
       </PlayerProvider>
     </Provider>
