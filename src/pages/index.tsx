@@ -140,12 +140,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
   if(!session) {
     return {
       redirect : {
-        destination: '/home',
+        destination: '/unsigned',
         permanent: false
       }
     }
   }
-  
+
   let episodes = []
 
   const response = await api.get('/episodes')
