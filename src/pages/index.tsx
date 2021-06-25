@@ -3,10 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 //types
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 
 //api
-import { HttpService } from '../services/api';
+import { api } from '../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -19,6 +19,8 @@ import { usePlayer } from '../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
+import { getSession } from 'next-auth/client';
+import { Player } from '../components/Player';
 
 interface Episode {
   id: string;
@@ -48,6 +50,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
       <Head>
         <title>Podcastr</title>
       </Head>
+      <div className={styles.episodesPlaylist}>
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
         <ul>
@@ -127,39 +130,49 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
         </table>
 
       </section>
-
+      </div>
+     
+      <Player/>
     </div>
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  let episodes = []
-  const http = new HttpService()
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
+  const session = await getSession({req});
 
-  await http.fetchEpisodes()
-  .then(async (response) => {
-    const data = response;
-    episodes = data.data
-  })
-  
-  episodes = episodes.map((ep)=> {
-   
+  if(!session) {
+    console.log('redirect')
+    return {
+      redirect : {
+        destination: '/unsigned',
+        permanent: false
+      }
+    }
+  }
+
+  let episodes = []
+
+  const response = await api.get('/episodes')
+  episodes = response.data.data.map((ep, epIdx)=> {
+   if(response.data.data.indexOf(ep) == epIdx) {
     return {
       id: ep.id,
       title: ep.title,
-      thumbnail: ep.thumbnail,
-      members: ep.members[0].name,
-      publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
+      thumbnail: ep.image,
+      members: "Banza",
+      publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
       duration: 0,
       durationString: secToTimeString(0),
       description: ep.description,
-      url: ep.file,
+      url: ep.link,
       avaliation: ep.avaliation || 0
     }
+   }
+    
   })
 
   const latestEpisodes = episodes.slice(0, 2);
-  const allEpisodes = episodes.slice(2, 12)
+  const allEpisodes = episodes.slice(2, episodes.length)
   return {
     props: {
       allEpisodes,

@@ -3,13 +3,18 @@ import Image from 'next/image';
 
 import styles from './styles.module.scss';
 import {FaGoogle} from 'react-icons/fa';
+import {useRouter} from 'next/router';
 
 export function SignInButton() {
     const [session] = useSession()
+    const router = useRouter()
     
-    function handleButtonClick() {
+    async function handleButtonClick() {
         if(session) {
-            signOut()
+            const res = await signOut()
+            if(res) {
+                router.push('/unsigned')
+            }
         } else {
             signIn('google')
         }

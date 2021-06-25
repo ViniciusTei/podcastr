@@ -1,0 +1,37 @@
+.pageContainer {
+    padding: 0 4rem;
+    height: calc(100vh - 6.5rem);
+    overflow-y: auto;
+}
+
+.pageContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 2rem 4rem;
+    height: 100%;
+    img {
+        width: 450px;
+        height: auto;
+    }
+
+    h2 {
+        font-size: 1.95rem;
+        text-align: left;
+        color: var(--gray-300);
+        font-weight: 200;
+    }
+}
+
+.pageArticle {
+    padding: 2rem 4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    
+    article {
+        max-width: 600px;
+    }
+}

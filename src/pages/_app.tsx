@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PlayerProvider from '../contexts/PlayerContext';
+import { Provider } from 'next-auth/client'
 //Styles
 import '../styles/global.scss'
 import styles from '../styles/app.module.scss';
 
 //components
 import { Header } from '../components/Header';
-import { Player } from '../components/Player';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <PlayerProvider>
-      <div className={styles.wrapper}>
-        <main>
-          <Header></Header>
-          <Component {...pageProps} />
-        </main>
-        <Player></Player>
-      </div>
-    </PlayerProvider>
+    <Provider session={pageProps.session}>
+      <PlayerProvider>
+        <div className={styles.wrapper}>
+          <main>
+            <Header></Header>
+            <Component {...pageProps} />
+          </main>
+        </div>
+      </PlayerProvider>
+    </Provider>
     
   )
 }

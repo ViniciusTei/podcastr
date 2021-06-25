@@ -1,8 +1,8 @@
 .homepage {
-    padding: 0 4rem;
+    padding: 0 0 0 4rem;
     height: calc(100vh - 6.5rem);
-    overflow-y: scroll;
-
+    display: flex;
+    
     h2 {
         margin-top: 3rem;
         margin-bottom: 1.5rem;
@@ -11,7 +11,14 @@
 
 }
 
+.episodesPlaylist {
+    height: 100%;
+    overflow-y: auto;
+    flex: 1;
+}
+
 .latestEpisodes {
+    
     ul {
         list-style: none;
         display: grid;
@@ -114,7 +121,6 @@
 
 .allEpisodes {
     padding-bottom: 2rem;
-
     table {
         width: 100%;
 

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 //api
-import { HttpService } from '../../services/api';
+// import { HttpService } from '../../services/api';
 
 //date format
 import { format, parseISO } from 'date-fns';
@@ -17,6 +17,7 @@ import { usePlayer } from '../../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
+import { api } from '../../services/api';
 
 interface Episode {
     id: string;
@@ -81,25 +82,34 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
     const { id } = ctx.params;
-    let data = null
-    const http = new HttpService()
+    let ep = null
+    // const http = new HttpService()
 
-    await http.fetchEpisodeById(id)
+    await api.get(`/episodes/${id}`)
         .then(async res => {
-            data = res.data[0]
+            ep = res.data.episode
         })
+
+    if (!ep) {
+        return {
+            redirect: {
+            destination: '/',
+            permanent: false,
+            },
+        }
+    }
     
     const episode = {
-        id: data.id,
-        title: data.title,
-        thumbnail: data.thumbnail,
-        members: data.members[0].name,
-        publishedAt: format(new Date(data.published), 'd MMM yy', {locale: ptBR}),
+        id: ep.id,
+        title: ep.title,
+        thumbnail: ep.image,
+        members: "Banza",
+        publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
         duration: 0,
         durationString: secToTimeString(0),
-        description: data.description,
-        url: data.file,
-        avaliation: data.avaliation
+        description: ep.description,
+        url: ep.link,
+        avaliation: ep.avaliation || 0
     }
 
     return {
