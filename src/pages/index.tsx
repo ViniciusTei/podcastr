@@ -134,10 +134,11 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const session = await getSession();
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
+  const session = await getSession({req});
 
   if(!session) {
+    console.log('redirect')
     return {
       redirect : {
         destination: '/unsigned',

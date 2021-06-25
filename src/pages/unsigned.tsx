@@ -1,6 +1,19 @@
+import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import styles from '../styles/unsigned.module.scss';
 
 export default function Home() {
+    const [session] = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if(session) {
+            console.log('redirect')
+            router.push('/')
+        }
+    }, [session])
+    
     return (
         <div className={styles.pageContainer}>
             <section className={styles.pageContent}>
