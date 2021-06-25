@@ -20,6 +20,7 @@ import { usePlayer } from '../contexts/PlayerContext';
 //icons
 import { MdStarBorder } from 'react-icons/md'
 import { getSession } from 'next-auth/client';
+import { Player } from '../components/Player';
 
 interface Episode {
   id: string;
@@ -128,12 +129,23 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
         </table>
 
       </section>
-
+      <Player/>
     </div>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  const session = await getSession();
+
+  if(!session) {
+    return {
+      redirect : {
+        destination: '/home',
+        permanent: false
+      }
+    }
+  }
+  
   let episodes = []
 
   const response = await api.get('/episodes')
