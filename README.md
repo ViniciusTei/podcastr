@@ -1,8 +1,10 @@
 # 🎧 Podcastr
 
+<div align="center">
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ViniciusTei/podcastr)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/ViniciusTei/podcastr/main?label=build)
 ![GitHub issues](https://img.shields.io/github/issues/ViniciusTei/podcastr)
+</div>
 
 Um app para ouvir podcasts cadastrados a partir de um feed rss.
 
@@ -15,6 +17,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [x] Adicionar login de usuário
 - [ ] Adicionar sub menu para adicionar um novo podcasts
 - [ ] Adicionar tabs para podcasts recomendados
+- [ ] Adicionar api route para avaliar um podcast
  
  ## ⚡ Utilizando
 
