@@ -62,7 +62,7 @@ export default async(request: NextApiRequest, response: NextApiResponse) => {
         if(episodesSnapshot.empty) {
             for (const item of feed.items) {
                 const ep = {
-                    published: new Date(item.pubDate || ''),
+                    published: new Date(item.isoDate),
                     title: item.title! ,
                     description: item.contentSnippet || '',
                     link: item.enclosure!.url,
@@ -83,25 +83,34 @@ export default async(request: NextApiRequest, response: NextApiResponse) => {
             })
         }
 
-        // let iterator = 0
-        // while(new Date(feed.items[iterator].pubDate) !== new Date(episodes[iterator].published._seconds * 1000)) {
-        //     try {
-               
-        //         const ep = {
-        //             published: new Date(feed.items[iterator].pubDate || ''),
-        //             title: feed.items[iterator].title! ,
-        //             description: feed.items[iterator].contentSnippet || '',
-        //             link: feed.items[iterator].enclosure!.url,
-        //             image: feed.items[iterator].itunes.image,
-        //             podcast_id: podcast[0].id
-        //         }
-        //         await episodesRef.add(ep)
-        //         iterator++
-        //     } catch (error) {
-        //         console.log(error)
-        //         break
-        //     }
-        // }
+        const lastEpisodeDate = new Date(episodes[0].published.toDate()).toISOString()
+        let iterator = 0
+
+        while(feed.items[iterator].isoDate !== lastEpisodeDate) {
+            const ep = {
+                published: new Date(feed.items[iterator].isoDate),
+                title: feed.items[iterator].title! ,
+                description: feed.items[iterator].contentSnippet || '',
+                link: feed.items[iterator].enclosure!.url,
+                image: feed.items[iterator].itunes.image,
+                podcast_id: podcast[0].id
+            }
+            
+            try {
+                const doc = await episodesRef.add(ep)
+                episodes.push({
+                    id: doc.id,
+                    ...ep
+                })
+                
+            } catch (error) {
+                return response.status(500).send({
+                    message: 'Internal error',
+                    data: []
+                })
+            }
+            iterator++
+        }
 
         return response.status(200).send({
             message: 'Success',
