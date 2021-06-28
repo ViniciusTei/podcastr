@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from './styles.module.scss';
 import {FaGoogle} from 'react-icons/fa';
 import {useRouter} from 'next/router';
+import { Dropdown } from '../Dropdown';
 
 export function SignInButton() {
     const [session] = useSession()
@@ -21,21 +22,7 @@ export function SignInButton() {
     }
 
     return session ? (
-        <button
-            type="button"
-            className={styles.button}
-            onClick={handleButtonClick}
-            title="Clique para sair"
-            >
-            <span>{session.user.name}</span>
-            <Image 
-                src={session.user.image} 
-                alt="User image" 
-                width={45} 
-                height={45} 
-                objectFit="cover" 
-            />
-        </button>
+        <Dropdown/>
     ) : (
         <button
             type="button"

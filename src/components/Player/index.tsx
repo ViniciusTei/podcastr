@@ -9,6 +9,7 @@ import styles from './styles.module.scss'
 import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
 import { Avaliation } from '../Avaliation';
+import { useSession } from 'next-auth/client';
 // import { HttpService } from '../../services/api';
 
 export function Player() {
@@ -31,6 +32,7 @@ export function Player() {
   const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
+  const [session] = useSession();
   // const api = new HttpService()
 
   function setupProgressListener() {
@@ -61,6 +63,7 @@ export function Player() {
     // .catch(() => console.log('Erro na avaliacao'))
   }
 
+
   useEffect(() => {
     if(!audioRef.current) {
       return 
@@ -71,6 +74,10 @@ export function Player() {
       audioRef.current.pause()
     }
   }, [isPlaying])
+
+  if(!session) {
+    return null
+  }
  
   return (
     <div className={styles.container}>
