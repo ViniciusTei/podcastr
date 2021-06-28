@@ -132,7 +132,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
       </section>
       </div>
      
-      <Player/>
+      {/* <Player/> */}
     </div>
   )
 }
