@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/client';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Loading } from '../components/Loading';
@@ -28,6 +29,9 @@ export default function Home() {
     
     return (
         <div className={styles.pageContainer}>
+            <Head>
+                <title>LogIn | 🎧 Podcastr</title>
+            </Head>
             <section className={styles.pageContent}>
                 <img src="/podcast.svg" alt="podcast audience" />
                 <h2>Faça login para começar a ouvir seus podcasts preferidos! 🎵</h2>
