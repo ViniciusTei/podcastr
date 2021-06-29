@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/client';
 
+import { api } from '../../services/api';
+
 import Image from 'next/image';
 import { Modal } from '../Modal';
+import { Loading } from '../Loading';
 
 import { MdClose, MdAdd } from 'react-icons/md';
 
@@ -13,6 +16,19 @@ export function Dropdown() {
     const [isOpen, setIsOpen] = useState(false)
     const [isModalAddPodcastOpen, setIsModalAddPodcastOpen] = useState(false)
     const [feedRssLink, setFeedRssLink] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const handleAddPodcast = async () => {
+        if(feedRssLink) {
+            setLoading(true)
+            const response = await api.post('/podcasts', {feed_url: feedRssLink})
+            console.log(response.data)
+            setLoading(false)
+            return
+        }
+
+        alert('Insira um link!')
+    }
 
     return (
         <>
@@ -53,7 +69,9 @@ export function Dropdown() {
                             setFeedRssLink(ev.target.value)
                         }}
                     />
-                    <button type="button">Salvar</button>
+                    <button type="button" onClick={handleAddPodcast}>
+                        {loading ? <Loading /> : 'Salvar'}
+                    </button>
                 </div>
                 
             </Modal>
