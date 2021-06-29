@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from 'next-auth/client';
 import { parse } from "../../services/rssparser";
-import firestore from '../../services/firebase';
+import firebase from '../../services/firebase';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     if(request.method === 'POST') {
@@ -14,13 +14,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         const { feed_url } = request.body;
         const feed = await parse(feed_url)
 
-        const userRef = await firestore.collection('users')
+        const userRef = firebase.collection('users')
         const userSnapshot = await userRef.where('email', '==', session.user.email).get()
         
         let userId = ''
         userSnapshot.forEach(doc => userId = doc.id)
 
-        const podcastRef = await firestore.collection('podcasts')
+        const podcastRef = firebase.collection('podcasts')
         const snapshot = await podcastRef.where('feed_rss', '==', feed_url).get()
         
         if(!snapshot.empty) {
@@ -29,10 +29,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
         const podcast = {
             author: feed.itunes.author,
-            titile: feed.title,
-            image: feed.image,
+            title: feed.title,
+            image: typeof feed.image === 'string' ? feed.image : feed.image.url,
             description: feed.description,
-            last_published: feed.items[0].pubDate,
+            last_published: feed.items[0].isoDate,
             feed_rss: feed_url,
             link: feed.link,
             user: userId
@@ -42,7 +42,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         
         const episodes = feed.items.map(item => {
             return {
-                published: new Date(item.pubDate || ''),
+                published: new Date(item.isoDate),
                 title: item.title! ,
                 description: item.contentSnippet || '',
                 link: item.enclosure!.url,
@@ -51,8 +51,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             }
         })
 
-        const episodesRef = await firestore.collection('episodes')
-        await episodesRef.add(episodes)
+        for (const ep of episodes) {
+            const episodesRef = firebase.collection('episodes')
+            await episodesRef.add(ep)
+        }
 
         response.status(200).json({
             data: {
@@ -60,26 +62,5 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                 episodes
             }
         })
-    } else if(request.method === 'GET') {
-
-        try {
-            const podcastRef = firestore.collection('podcasts')
-            const snapshot = await podcastRef.get()
-    
-            const podcast = []
-    
-            snapshot.forEach(doc => {
-                podcast.push(doc.data())
-            })
-    
-            response.status(200).json({
-                data: {
-                    podcast
-                }
-            })
-        } catch(err) {
-            console.log(err)
-        }
-        
     }
 }

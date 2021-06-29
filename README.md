@@ -17,9 +17,12 @@ Um app para ouvir podcasts cadastrados a partir de um feed rss.
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
 - [x] Adicionar login de usuário
-- [ ] Adicionar sub menu para adicionar um novo podcasts
-- [ ] Adicionar tabs para podcasts recomendados
+- [x] Adicionar sub menu para adicionar um novo podcasts
+- [ ] Melhorar api-route de buscar episódios
+    - [ ] Trazer todos os podcasts cadastrados por aquele usuário
+    - [ ] Fazer paginação para busca de episódios
 - [ ] Adicionar api route para avaliar um podcast
+- [ ] Adicionar tabs para podcasts recomendados
  
  ## ⚡ Utilizando
 
