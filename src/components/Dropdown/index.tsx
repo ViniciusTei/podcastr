@@ -12,6 +12,7 @@ export function Dropdown() {
     const [session] = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const [isModalAddPodcastOpen, setIsModalAddPodcastOpen] = useState(false)
+    const [feedRssLink, setFeedRssLink] = useState('')
 
     return (
         <>
@@ -41,8 +42,20 @@ export function Dropdown() {
             isOpen={isModalAddPodcastOpen}
             handleClose={() => setIsModalAddPodcastOpen(false)}
             >
-                <label htmlFor="rss_link">Insira abaixo um link rss</label>
-                <input type="text" name="rss_link"/>
+                <div className={styles.modalContent}>
+                    <label htmlFor="rss_link">Insira abaixo um link rss</label>
+                    <input 
+                        type="text" 
+                        name="rss_link"
+                        placeholder="http://example.com/rss"
+                        value={feedRssLink}
+                        onChange={(ev) => {
+                            setFeedRssLink(ev.target.value)
+                        }}
+                    />
+                    <button type="button">Salvar</button>
+                </div>
+                
             </Modal>
         </>
     )
