@@ -1,5 +1,8 @@
+<div align="center">
+
 # 🎧 Podcastr
 
+</div>
 <div align="center">
 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ViniciusTei/podcastr)
@@ -23,12 +26,13 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
     - [ ] Fazer paginação para busca de episódios
 - [ ] Adicionar api route para avaliar um podcast
 - [ ] Adicionar tabs para podcasts recomendados
+- [ ] Transformar em PWA
  
  ## ⚡ Utilizando
 
  Voce pode utilizar o app no link [https://podcastr-class.vercel.app/].
 
- Ou se preferir siga para siga para a secao a seguir.
+ Ou se preferir siga para siga para a secção a seguir.
 
  ## 📫 Contribuindo
 
