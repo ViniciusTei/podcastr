@@ -1,6 +1,9 @@
-import { useSession, signOut } from 'next-auth/client';
-import Image from 'next/image';
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/client';
+
+import Image from 'next/image';
+import { Modal } from '../Modal';
+
 import { MdClose, MdAdd } from 'react-icons/md';
 
 import styles from './styles.module.scss';
@@ -8,8 +11,10 @@ import styles from './styles.module.scss';
 export function Dropdown() {
     const [session] = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const [isModalAddPodcastOpen, setIsModalAddPodcastOpen] = useState(false)
 
     return (
+        <>
         <div className={styles.dropdown} onClick={() => setIsOpen(!isOpen)}>
             <div className={styles.wrapper} title="Clique para expandir">
                 <span>{session.user.name}</span>
@@ -23,7 +28,7 @@ export function Dropdown() {
             </div>
             {isOpen && 
             <div className={`${styles.content}`}>
-                <div className={`${styles.wrapper}`}>
+                <div className={`${styles.wrapper}`} onClick={() => setIsModalAddPodcastOpen(true)}>
                     Adicionar podcast <MdAdd width={24} height={24}/>
                 </div>
                 <div className={`${styles.wrapper}`} onClick={() => signOut()}>
@@ -31,6 +36,14 @@ export function Dropdown() {
                 </div>
             </div>}
         </div>
-        
+        <Modal 
+            title="Adicionar podcast" 
+            isOpen={isModalAddPodcastOpen}
+            handleClose={() => setIsModalAddPodcastOpen(false)}
+            >
+                <label htmlFor="rss_link">Insira abaixo um link rss</label>
+                <input type="text" name="rss_link"/>
+            </Modal>
+        </>
     )
 }
