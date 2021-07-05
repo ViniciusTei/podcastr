@@ -13,11 +13,13 @@ export default NextAuth({
     // ...add more providers here
   ],
   callbacks: {
+    async session(session, user) {
+      return session
+    },
     async signIn(user) {
         if (user) {
           const usersRef = firebase.collection('users');
-          const snapshot = await usersRef.where('email', '==', user.email).get();
-
+          const snapshot = await usersRef.where('email', '==', user.email).get()
           if (snapshot.empty) {
             try {
               await usersRef.add(user)
@@ -27,9 +29,13 @@ export default NextAuth({
               return false
             }
             
-          } 
+          } else {
+            
+            return true
+          }
          
         } else {
+          
           return false
         }
       },
