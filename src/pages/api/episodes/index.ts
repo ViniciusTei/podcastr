@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { parse } from '../../../services/rssparser';
 import firestore from '../../../services/firebase';
+import { getSession } from 'next-auth/client';
 
 interface Podcast {
     id: string;
@@ -24,71 +25,52 @@ interface Episode {
     podcast_id: string;
 }
 
-export default async(request: NextApiRequest, response: NextApiResponse) => {
-    if(request.method == 'GET') {
-        const podcastsRef = firestore.collection('podcasts')
-        const podcatsSnapshot = await podcastsRef.get()
-        
-        if(podcatsSnapshot.empty) {
-            return response.status(404).send({
-                message: 'Not found',
-                data: []
-            })
-        }
-        const podcast: Podcast[] = []
-        podcatsSnapshot.forEach(doc => {
-            podcast.push({
-                id: doc.id,
-                ...doc.data() as any
-            })
+export default async (request: NextApiRequest, response: NextApiResponse) => {
+    try {
+        const session = await getSession({req: request})
+    
+    if(!session) {
+        return response.status(400).json({error: "Not logged in"})
+    }
+    
+    const userRef = firestore.collection('users')
+    const userSnapshot = await userRef.where('email', '==', session?.user.email).get()
+    let userId = ''
+    userSnapshot.forEach(doc => userId = doc.id)
+    const podcastRef = firestore.collection('podcasts')
+
+    const podcastsSnapshot = await podcastRef.where('user', '==', userId).get()
+    
+    if(podcastsSnapshot.empty) {
+        return response.status(200).send({
+            message: 'Podcasts Not found',
+            data: []
         })
-        
-        const feed = await parse(podcast[0].feed_rss)
+    }
 
-        let episodes: Episode[] = []
-        const episodesRef = firestore.collection('episodes')
-        const episodesSnapshot = await episodesRef
-            .where('podcast_id', '==', podcast[0].id)
-            .orderBy('published', 'desc')
-            .get()
-        
-            episodesSnapshot.forEach(doc => {
-            episodes.push({
-                id: doc.id,
-                ...doc.data() as any
-            })
+    const podcast: Podcast[] = []
+    podcastsSnapshot.forEach(doc => {
+        podcast.push({
+            id: doc.id,
+            ...doc.data() as any
         })
+    })
 
-        if(episodesSnapshot.empty) {
-            for (const item of feed.items) {
-                const ep = {
-                    published: new Date(item.isoDate),
-                    title: item.title! ,
-                    description: item.contentSnippet || '',
-                    link: item.enclosure!.url,
-                    image: item.itunes.image,
-                    podcast_id: podcast[0].id
-                }
-                const doc = await episodesRef.add(ep)
-                episodes.push({
-                    id: doc.id,
-                    ...ep
-                })
-
-            }
-
-            return response.status(200).send({
-                message: 'Success',
-                data: episodes
-            })
-        }
-
-        const lastEpisodeDate = new Date(episodes[0].published.toDate()).toISOString()
+    let episodes: Episode[] = []
+    let podcastsIds: string[] = []
+    const episodesRef = firestore.collection('episodes')
+    
+    for (const pod of podcast) {
+        podcastsIds.push(pod.id) 
+        
+        //update episodes list with new episodes from each podcast
+        let feed = await parse(pod.feed_rss)
         let iterator = 0
 
-        while(feed.items[iterator].isoDate !== lastEpisodeDate) {
+        while(feed.items[iterator].isoDate !== pod.last_published) {
+            
             const ep = {
-                published: new Date(feed.items[iterator].isoDate),
+                published: feed.items[iterator].isoDate,
                 title: feed.items[iterator].title! ,
                 description: feed.items[iterator].contentSnippet || '',
                 link: feed.items[iterator].enclosure!.url,
@@ -111,10 +93,30 @@ export default async(request: NextApiRequest, response: NextApiResponse) => {
             }
             iterator++
         }
+    }
 
-        return response.status(200).send({
-            message: 'Success',
-            data: episodes
+    const episodesSnapshot = await episodesRef
+        .where('podcast_id', 'in', podcastsIds)
+        .orderBy('published', 'desc')
+        .limit(15)
+        .get()
+    
+        episodesSnapshot.forEach(doc => {
+        episodes.push({
+            id: doc.id,
+            ...doc.data() as any
+        })
+    })
+
+    return response.status(200).send({
+        message: 'Success',
+        data: episodes
+    })
+    } catch (error) {
+        return response.status(500).send({
+            message: 'Internal error',
+            data: []
         })
     }
+
 }

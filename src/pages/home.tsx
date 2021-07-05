@@ -150,8 +150,9 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
   }
 
   let episodes = []
-
-  const response = await api.get('/episodes')
+  
+  const options = { headers: { cookie: req.headers.cookie } }
+  const response = await api.get('/episodes', options)
   episodes = response.data.data.map((ep, epIdx)=> {
    if(response.data.data.indexOf(ep) == epIdx) {
     return {
@@ -159,7 +160,7 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
       title: ep.title,
       thumbnail: ep.image,
       members: "Banza",
-      publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
+      publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
       duration: 0,
       durationString: secToTimeString(0),
       description: ep.description,

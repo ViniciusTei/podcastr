@@ -8,7 +8,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         const session = await getSession({ req: request })
 
         if(!session) {
-            response.status(400).json({error: "Not logged in"})
+            return response.status(400).json({error: "Not logged in"})
         }
         
         const { feed_url } = request.body;
@@ -42,7 +42,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         
         const episodes = feed.items.map(item => {
             return {
-                published: new Date(item.isoDate),
+                published: item.isoDate,
                 title: item.title! ,
                 description: item.contentSnippet || '',
                 link: item.enclosure!.url,
