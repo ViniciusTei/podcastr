@@ -98,7 +98,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const episodesSnapshot = await episodesRef
         .where('podcast_id', 'in', podcastsIds)
         .orderBy('published', 'desc')
-        .limit(15)
         .get()
     
         episodesSnapshot.forEach(doc => {
