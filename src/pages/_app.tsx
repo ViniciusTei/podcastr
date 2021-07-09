@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
             <Header></Header>
             <Component {...pageProps} />
           </main>
-          <Player/>
+          <Player />
         </div>
       </PlayerProvider>
     </Provider>

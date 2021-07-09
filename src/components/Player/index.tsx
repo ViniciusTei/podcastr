@@ -34,6 +34,9 @@ export function Player() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [session] = useSession();
   // const api = new HttpService()
+  const [currentWindowSize, setCurrentWindowSize] = useState(0)
+
+  
 
   function setupProgressListener() {
     setCurrentAudioMaxDuration(audioRef.current.duration)
@@ -63,6 +66,10 @@ export function Player() {
     // .catch(() => console.log('Erro na avaliacao'))
   }
 
+  useEffect(() => {
+    setCurrentWindowSize(window.screen.width)
+
+  }, [])
 
   useEffect(() => {
     if(!audioRef.current) {
@@ -95,7 +102,7 @@ export function Player() {
             objectFit="cover"/>
           <strong>{episode.title}</strong>
           <span>{episode.members}</span>
-          <Avaliation rate={episode.avaliation} onClickAvaliation={handleAvaliationClick}/>
+          {currentWindowSize > 1080 ? <Avaliation rate={episode.avaliation} onClickAvaliation={handleAvaliationClick}/> : null}
         </div>
       ) : (
         <div className={styles.empty}>
