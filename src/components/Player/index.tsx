@@ -67,7 +67,7 @@ export function Player() {
   }
 
   useEffect(() => {
-    setCurrentWindowSize(window.screen.width)
+    if(window.screen.width) setCurrentWindowSize(window.screen.width)
 
   }, [])
 
