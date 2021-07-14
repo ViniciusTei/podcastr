@@ -1,6 +1,16 @@
 .wrapper {
   display: flex;
+  flex-direction: column;
+  position: relative;
   main {
     flex: 1;
   }
+}
+
+@media screen and (min-width: 1080px) {
+  .wrapper {
+    flex-direction: row;
+
+  }
+  
 }

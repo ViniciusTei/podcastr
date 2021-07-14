@@ -77,14 +77,19 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                 image: feed.items[iterator].itunes.image,
                 podcast_id: podcast[0].id
             }
+
+            console.log(ep)
             
             try {
-                const doc = await episodesRef.add(ep)
-                episodes.push({
-                    id: doc.id,
-                    ...ep
+                await episodesRef.add(ep)
+                podcastsSnapshot.forEach(async doc => {
+                    if(doc.id === pod.id) {
+                        const ref = doc.ref
+                        const newData = doc.data()
+                        newData.last_published = ep.published
+                        await ref.update(newData)
+                    }
                 })
-                
             } catch (error) {
                 return response.status(500).send({
                     message: 'Internal error',
@@ -98,7 +103,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const episodesSnapshot = await episodesRef
         .where('podcast_id', 'in', podcastsIds)
         .orderBy('published', 'desc')
-        .limit(15)
         .get()
     
         episodesSnapshot.forEach(doc => {

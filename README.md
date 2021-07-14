@@ -21,12 +21,11 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 - [x] Adicionar login de usuário
 - [x] Adicionar sub menu para adicionar um novo podcasts
-- [ ] Melhorar api-route de buscar episódios
-    - [ ] Trazer todos os podcasts cadastrados por aquele usuário
-    - [ ] Fazer paginação para busca de episódios
+- [x] Melhorar api-route de buscar episódios
+    - [x] Trazer todos os podcasts cadastrados por aquele usuário
+- [ ] Transformar em PWA
 - [ ] Adicionar api route para avaliar um podcast
 - [ ] Adicionar tabs para podcasts recomendados
-- [ ] Transformar em PWA
  
  ## ⚡ Utilizando
 
