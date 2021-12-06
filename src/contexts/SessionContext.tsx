@@ -22,8 +22,8 @@ interface ISessionContext {
 const SessionContext = createContext({} as ISessionContext)
 
 export default function SessionProvider({children}: { children: ReactNode }) {
-  const [session, setSession] = useState<Session>(null);
   const [cookie, setCookie] = useCookies(["session"]);
+  const [session, setSession] = useState<Session>(cookie.session ? cookie.session : null);
   const loginService = new LoginService()
 
   async function login(email: string, password: string) {
@@ -41,6 +41,7 @@ export default function SessionProvider({children}: { children: ReactNode }) {
 
   async function logout() {
     setSession(null);
+    setCookie('session', null)
   }
 
   return (

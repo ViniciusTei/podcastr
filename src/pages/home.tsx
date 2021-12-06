@@ -18,8 +18,8 @@ import styles from '../styles/home.module.scss';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 interface Episode {
   id: string;
@@ -45,7 +45,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   const router = useRouter()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
-
+  
   useEffect(() => {
     if (!session) {
       router.push('/')
@@ -65,11 +65,11 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
             return (
               <li key={episode.id}>
                 <Image 
-                  width={192} 
-                  height={192} 
                   src={episode.thumbnail} 
                   alt="Imagem do episódio" 
                   objectFit="cover"
+                  width={192} 
+                  height={192} 
                 />
                 <div className={styles.episodeDetails}>
                   <Link href={`/episode/${episode.id}`}>
