@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import EpisodesService from '../services/Episodes';
 import { parseCookies } from '../utils/parseCookies';
+import { usePlayer } from '../contexts/PlayerContext';
+import { useSession } from '../contexts/SessionContext';
 //types
 import { GetServerSideProps } from 'next';
 
@@ -13,10 +15,11 @@ import { secToTimeString } from '../utils/timeMsToDateString';
 
 //styles
 import styles from '../styles/home.module.scss';
-import { usePlayer } from '../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 interface Episode {
   id: string;
@@ -38,8 +41,16 @@ interface HomeProps {
 
 export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   const { playList } = usePlayer()
+  const { session } = useSession()
+  const router = useRouter()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/')
+    }
+  }, [session])
   
   return (
     <div className={styles.homepage}>

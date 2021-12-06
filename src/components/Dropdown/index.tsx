@@ -37,10 +37,10 @@ export function Dropdown() {
             </div>
             {isOpen && 
             <div className={`${styles.content}`}>
-                <div className={`${styles.wrapper}`} onClick={() => setIsModalAddPodcastOpen(true)}>
+                <div className={`${styles.wrapper} ${styles.space_between}`} onClick={() => setIsModalAddPodcastOpen(true)}>
                     Adicionar podcast <MdAdd width={24} height={24}/>
                 </div>
-                <div className={`${styles.wrapper}`} onClick={() => logout()}>
+                <div className={`${styles.wrapper} ${styles.space_between}`} onClick={() => logout()}>
                     Sair <MdClose width={24} height={24}/>
                 </div>
             </div>}

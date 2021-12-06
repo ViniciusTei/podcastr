@@ -2,7 +2,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { Loading } from '../components/Loading';
-import { SignInButton } from '../components/SignInButton';
 import { useSession } from '../contexts/SessionContext';
 import styles from '../styles/login.module.scss';
 
