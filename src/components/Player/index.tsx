@@ -9,7 +9,8 @@ import styles from './styles.module.scss'
 import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
 import { Avaliation } from '../Avaliation';
-import { useSession } from 'next-auth/client';
+import { useSession } from '../../contexts/SessionContext';
+
 // import { HttpService } from '../../services/api';
 
 export function Player() {
@@ -32,7 +33,7 @@ export function Player() {
   const [currentAudioMaxDuration, setCurrentAudioMaxDuration] = useState(0)
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [session] = useSession();
+  const {session} = useSession();
   // const api = new HttpService()
   const [currentWindowSize, setCurrentWindowSize] = useState(0)
 

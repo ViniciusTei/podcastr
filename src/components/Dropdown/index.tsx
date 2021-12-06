@@ -1,28 +1,29 @@
 import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/client';
+import { useSession } from '../../contexts/SessionContext';
 
 import { api } from '../../services/api';
 
-import Image from 'next/image';
 import { Modal } from '../Modal';
 import { Loading } from '../Loading';
 
 import { MdClose, MdAdd } from 'react-icons/md';
 
 import styles from './styles.module.scss';
+import PodcastService from '../../services/podcastsService';
 
 export function Dropdown() {
-    const [session] = useSession()
+    const {session, logout} = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const [isModalAddPodcastOpen, setIsModalAddPodcastOpen] = useState(false)
     const [feedRssLink, setFeedRssLink] = useState('')
     const [loading, setLoading] = useState(false)
-
+    const podcastsService = new PodcastService(session.token)
+    
     const handleAddPodcast = async () => {
         if(feedRssLink) {
             setLoading(true)
-            const response = await api.post('/podcasts', {feed_url: feedRssLink})
-            console.log(response.data)
+            const response = await podcastsService.createPodcast(session.user.id, feedRssLink)
+            console.log(response)
             setLoading(false)
             return
         }
@@ -34,21 +35,14 @@ export function Dropdown() {
         <>
         <div className={styles.dropdown} onClick={() => setIsOpen(!isOpen)}>
             <div className={styles.wrapper} title="Clique para expandir">
-                <span>{session.user.name}</span>
-                <Image 
-                    src={session.user.image} 
-                    alt="User image" 
-                    width={45} 
-                    height={45} 
-                    objectFit="cover" 
-                />
+                <span>{session.user?.name}</span>
             </div>
             {isOpen && 
             <div className={`${styles.content}`}>
-                <div className={`${styles.wrapper}`} onClick={() => setIsModalAddPodcastOpen(true)}>
+                <div className={`${styles.wrapper} ${styles.space_between}`} onClick={() => setIsModalAddPodcastOpen(true)}>
                     Adicionar podcast <MdAdd width={24} height={24}/>
                 </div>
-                <div className={`${styles.wrapper}`} onClick={() => signOut()}>
+                <div className={`${styles.wrapper} ${styles.space_between}`} onClick={() => logout()}>
                     Sair <MdClose width={24} height={24}/>
                 </div>
             </div>}
