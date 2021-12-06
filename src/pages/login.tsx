@@ -1,20 +1,33 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Loading } from '../components/Loading';
 import { SignInButton } from '../components/SignInButton';
 import { useSession } from '../contexts/SessionContext';
 import styles from '../styles/login.module.scss';
 
 export default function Login() {
-    const {session} = useSession();
+    const { session, login } = useSession();
+    const emailRef = useRef<HTMLInputElement>(null)
+    const passwordRef = useRef<HTMLInputElement>(null)
     const [loading, setLoading] = useState(false)
     const router = useRouter();
+
+    async function handleLogin() {
+      const email = emailRef.current.value
+      const password = passwordRef.current.value
+
+      try {
+        await login(email, password)
+        
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
     useEffect(() => {
         if(session) {
             setLoading(true)
-            console.log('redirect')
             router.push('/home')
         }
     }, [session])
@@ -34,15 +47,28 @@ export default function Login() {
                 <title>Login | 🎧 Podcastr</title>
             </Head>
             <section className={styles.pageContent}>
-                <div>
+                <div className={styles.input}>
                   <label htmlFor="email">Email</label>
-                  <input type="email" placeholder="example@email.com" name="email" />
+                  <input 
+                    type="email"
+                    placeholder="example@email.com"
+                    name="email"
+                    ref={emailRef}
+                  />
                 </div>
-                <div>
-                  <label htmlFor="email">Email</label>
-                  <input type="email" placeholder="example@email.com" name="email" />
+                <div className={styles.input}>
+                  <label htmlFor="senha">Senha</label>
+                  <input 
+                    type="password" 
+                    name="senha" 
+                    ref={passwordRef}
+                  />
                 </div>
-                <SignInButton/>
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className={styles.btn_login}
+                >Entrar</button>
             </section>
             <footer className={styles.footer}>
                 Made by ViniciusTei.

@@ -5,7 +5,12 @@ import {BiLogInCircle} from 'react-icons/bi';
 import {useRouter} from 'next/router';
 import { Dropdown } from '../Dropdown';
 
-export function SignInButton() {
+interface SignInButton {
+    email?: string;
+    password?: string;
+}
+
+export function SignInButton({ email, password }: SignInButton) {
     const { session, login, logout } = useSession()
     const router = useRouter()
     
@@ -14,8 +19,11 @@ export function SignInButton() {
             await logout()
             router.push('/unsigned')
         } else {
-            await login('viniteixeirap@hotmail.com', '123456')
-            router.push('/home')
+            if(email && password) {
+                await login(email, password)
+                router.push('/home')
+            }
+            
         }
     }
 

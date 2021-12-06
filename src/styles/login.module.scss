@@ -29,12 +29,51 @@
   text-align: center;
 }
 
+.input {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: .5rem;
+  padding: 2px 4px;
+
+  label {
+    font-size: .75rem;
+    color: var(--gray-500);
+  }
+
+  input {
+    border: none;
+    outline: none;
+  }
+}
+
+.btn_login {
+  padding: .5rem 1rem;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: .5rem;
+  outline: none;
+  transition: filter 0.2s;
+  
+  &:hover {
+    filter: brightness(.9);
+  }
+
+  &:active {
+    border: 1px solid var(--gray-500);
+    filter: brightness(.7);
+  }
+}
+
 @media screen and (min-width: 1080px) {
   
   .pageContent {
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
       padding: 2rem 4rem;
       height: 100%;
       
