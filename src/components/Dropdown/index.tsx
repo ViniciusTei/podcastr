@@ -9,6 +9,7 @@ import { Loading } from '../Loading';
 import { MdClose, MdAdd } from 'react-icons/md';
 
 import styles from './styles.module.scss';
+import PodcastService from '../../services/podcastsService';
 
 export function Dropdown() {
     const {session, logout} = useSession()
@@ -16,12 +17,13 @@ export function Dropdown() {
     const [isModalAddPodcastOpen, setIsModalAddPodcastOpen] = useState(false)
     const [feedRssLink, setFeedRssLink] = useState('')
     const [loading, setLoading] = useState(false)
-
+    const podcastsService = new PodcastService(session.token)
+    
     const handleAddPodcast = async () => {
         if(feedRssLink) {
             setLoading(true)
-            const response = await api.post('/podcasts', {feed_url: feedRssLink})
-            console.log(response.data)
+            const response = await podcastsService.createPodcast(session.user.id, feedRssLink)
+            console.log(response)
             setLoading(false)
             return
         }
