@@ -1,23 +1,21 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
-import Image from 'next/image';
+import { useSession } from '../../contexts/SessionContext';
 
 import styles from './styles.module.scss';
-import {FaGoogle} from 'react-icons/fa';
+import {BiLogInCircle} from 'react-icons/bi';
 import {useRouter} from 'next/router';
 import { Dropdown } from '../Dropdown';
 
 export function SignInButton() {
-    const [session] = useSession()
+    const { session, login, logout } = useSession()
     const router = useRouter()
     
     async function handleButtonClick() {
         if(session) {
-            const res = await signOut()
-            if(res) {
-                router.push('/unsigned')
-            }
+            await logout()
+            router.push('/unsigned')
         } else {
-            signIn('google')
+            await login('viniteixeirap@hotmail.com', '123456')
+            router.push('/home')
         }
     }
 
@@ -30,8 +28,8 @@ export function SignInButton() {
             onClick={handleButtonClick}
             >
             <span className={styles.unlloged}>
-                Entre com
-                <FaGoogle color="#4285F4"/>
+                Faça login&nbsp;
+                <BiLogInCircle color="#4285F4"/>
             </span>
 
         </button>

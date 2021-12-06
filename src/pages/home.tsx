@@ -1,15 +1,13 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import EpisodesService from '../services/Episodes';
+import { parseCookies } from '../utils/parseCookies';
 //types
-import { GetServerSideProps, GetStaticProps } from 'next';
-
-//api
-import { api } from '../services/api';
+import { GetServerSideProps } from 'next';
 
 //date format
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { secToTimeString } from '../utils/timeMsToDateString';
 
@@ -19,8 +17,6 @@ import { usePlayer } from '../contexts/PlayerContext';
 
 //icons
 import { MdStarBorder } from 'react-icons/md'
-import { getSession } from 'next-auth/client';
-import { Player } from '../components/Player';
 
 interface Episode {
   id: string;
@@ -131,41 +127,42 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
 
       </section>
       </div>
-     
-      {/* <Player/> */}
     </div>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({req}) => {
-  const session = await getSession({req});
+  const cookie = parseCookies(req);
 
-  if(!session) {
+  if(Object.keys(cookie).length === 0 && cookie.constructor === Object) {
     return {
-      redirect : {
+        redirect: {
         destination: '/',
-        permanent: false
-      }
+        permanent: false,
+      },
     }
   }
-
+  
+  const { session } = cookie;
+  const { token, user } = JSON.parse(session);
+  const episodesService = new EpisodesService(token)
   let episodes = []
   
-  const options = { headers: { cookie: req.headers.cookie } }
-  const response = await api.get('/episodes', options)
-  episodes = response.data.data.map((ep, epIdx)=> {
-   if(response.data.data.indexOf(ep) == epIdx) {
+  const response = await episodesService.getMostRecentEpisodes(user.id)
+
+  episodes = response.map((ep, epIdx)=> {
+   if(response.indexOf(ep) == epIdx) {
     return {
-      id: ep.id,
+      id: ep._id,
       title: ep.title,
-      thumbnail: ep.image,
-      members: "Banza",
-      publishedAt: format(new Date(ep.published), 'd MMM yy', {locale: ptBR}),
-      duration: 0,
-      durationString: secToTimeString(0),
+      thumbnail: ep.thumbnail,
+      members: ep.members,
+      publishedAt: format(new Date(ep.releaseDate), 'd MMM yy', {locale: ptBR}),
+      duration: ep.audioLength,
+      durationString: secToTimeString(ep.audioLength),
       description: ep.description,
-      url: ep.link,
-      avaliation: ep.avaliation || 0
+      url: ep.audioUrl,
+      avaliation: 0
     }
    }
     

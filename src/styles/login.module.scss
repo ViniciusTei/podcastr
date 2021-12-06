@@ -1,0 +1,51 @@
+
+.pageContainer {
+  padding: 0 4rem;
+  height: calc(100vh - 6.5rem);
+  position: relative;
+}
+
+.pageContent {
+  .image {
+      width: 450px;
+      height: auto;
+  }
+
+  .title {
+      font-size: 2.95rem;
+      text-align: left;
+      color: var(--gray-300);
+      font-weight: 200;
+      margin: 4rem 0;
+  }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 1080px) {
+  
+  .pageContent {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 2rem 4rem;
+      height: 100%;
+      
+      
+  }
+  
+  
+}
+
+@media screen and (min-width: 720px) {
+  
+}
+
+

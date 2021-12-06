@@ -2,10 +2,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Loading } from '../components/Loading';
+import { SignInButton } from '../components/SignInButton';
 import { useSession } from '../contexts/SessionContext';
-import styles from '../styles/unsigned.module.scss';
+import styles from '../styles/login.module.scss';
 
-export default function Home() {
+export default function Login() {
     const {session} = useSession();
     const [loading, setLoading] = useState(false)
     const router = useRouter();
@@ -30,11 +31,18 @@ export default function Home() {
     return (
         <div className={styles.pageContainer}>
             <Head>
-                <title>🎧 Podcastr</title>
+                <title>Login | 🎧 Podcastr</title>
             </Head>
             <section className={styles.pageContent}>
-                <h1 className={styles.title}>Faça login para começar a ouvir seus podcasts preferidos! 🎵</h1>
-                <img className={styles.image} src="/podcast.svg" alt="podcast audience" />
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input type="email" placeholder="example@email.com" name="email" />
+                </div>
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input type="email" placeholder="example@email.com" name="email" />
+                </div>
+                <SignInButton/>
             </section>
             <footer className={styles.footer}>
                 Made by ViniciusTei.
