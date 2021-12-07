@@ -1,20 +1,13 @@
-import { api } from './api';
+import Api from './api';
 
-type Options = {
-  headers: {
-    Authorization: string;
-  }
-}
-
-export default class PodcastService {
-  private options: Options
+export default class PodcastService extends Api{
 
   constructor(token: string) {
-    this.options = { headers: { Authorization: `Bearer ${token}` } }
+    super(token)
   }
 
   async createPodcast(userId: string, feed_url: string) {
-    const response = await api.post(`/podcasts/${userId}`, {feed_url: feed_url}, this.options)
+    const response = await this.api.post(`/podcasts/${userId}`, {feed_url: feed_url})
 
     return response.data
   }

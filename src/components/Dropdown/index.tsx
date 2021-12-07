@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useSession } from '../../contexts/SessionContext';
 
-import { api } from '../../services/api';
-
 import { Modal } from '../Modal';
 import { Loading } from '../Loading';
 

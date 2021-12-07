@@ -10,8 +10,7 @@ import 'rc-slider/assets/index.css';
 import { secToTimeString } from '../../utils/timeMsToDateString';
 import { Avaliation } from '../Avaliation';
 import { useSession } from '../../contexts/SessionContext';
-
-// import { HttpService } from '../../services/api';
+import Volume from '../Volume';
 
 export function Player() {
   const { 
@@ -34,7 +33,6 @@ export function Player() {
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
   const {session} = useSession();
-  // const api = new HttpService()
   const [currentWindowSize, setCurrentWindowSize] = useState(0)
 
   
@@ -58,6 +56,10 @@ export function Player() {
     } else {
       clearPlayerState()
     }
+  }
+
+  function onChangeVolume(amount: number ){
+    audioRef.current.volume = amount;
   }
 
   async function handleAvaliationClick(value: number) {
@@ -167,14 +169,11 @@ export function Player() {
           <button onClick={playNext} type="button" disabled={!episode || !hasNext}>
             <img src="/play-next.svg" alt="next"/>
           </button>
-          <button 
-            type="button" 
-            disabled={!episode} 
-            onClick={toggleLooping}
-            className={isLooping ? styles.isActive : ''}
-            >
-            <img src="/repeat.svg" alt="repeat"/>
-          </button>
+          <Volume
+            isDisabled={!episode}
+            onVolumeChange={onChangeVolume}
+          />
+          
         </div>
       </footer>
     </div>

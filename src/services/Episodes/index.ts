@@ -1,6 +1,6 @@
-import { api } from '../api';
+import Api from '../api';
 
-interface EpisodesResponse {
+type Episode = {
   _id: string;
   title: string;
   audioUrl: string;
@@ -10,22 +10,32 @@ interface EpisodesResponse {
   thumbnail: string;
   audioLength: number;
 }
-
-type Options = {
-  headers: {
-    Authorization: string;
-  }
+interface EpisodesResponse {
+  data: Array<Episode>
+  page: number
+  pageSize: number
+  totalPages: number
 }
 
-export default class EpisodesService {
-  private options: Options;
+export default class EpisodesService extends Api {
 
   constructor(token: string) {
-    this.options = { headers: { Authorization: `Bearer ${token}` } }
+    super(token)
   }
 
-  async getMostRecentEpisodes(userId: string): Promise<EpisodesResponse[]> {
-    const response = await api.get<EpisodesResponse[]>(`/episodes/${userId}`, this.options)
+  async getMostRecentEpisodes(userId: string): Promise<EpisodesResponse> {
+    const response = await this.api.get<EpisodesResponse>(`/episodes/${userId}`)
+    return response.data
+  }
+
+  async getEpisodes(userId: string, page: number): Promise<EpisodesResponse> {
+    const response = await this.api.get<EpisodesResponse>(`/episodes/${userId}?page=${page}`)
+    return response.data
+  }
+
+  async getOneEpisodeById(userId: string, episodeId: string): Promise<Episode> {
+    const body = { episodeId }
+    const response = await this.api.get<Episode>(`/episodes/${userId}/detail`, { data: body })
     return response.data
   }
 }
