@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -16,8 +16,9 @@ import styles from './episode.module.scss';
 import { usePlayer } from '../../contexts/PlayerContext';
 
 //icons
-import { MdStarBorder } from 'react-icons/md'
-import { api } from '../../services/api';
+import { MdStarBorder } from 'react-icons/md';
+import { parseCookies } from '../../utils/parseCookies';
+import EpisodesService from '../../services/Episodes';
 
 interface Episode {
     id: string;
@@ -64,31 +65,30 @@ export default function Episode({episode}: EpisodeProps) {
                 <span><MdStarBorder/>{episode.avaliation.toFixed(2)}</span>
             </header>
 
-            <div className={styles.desciption}>
-                <p>
-                    {episode.description}
-                </p>
-            </div>
+            <div className={styles.desciption} dangerouslySetInnerHTML={{__html: episode.description}} />
+               
         </div>
     )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: [],
-        fallback: true
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    const { id } = query;
+    const cookie = parseCookies(req);
+
+    if(Object.keys(cookie).length === 0 && cookie.constructor === Object) {
+        return {
+            redirect: {
+            destination: '/',
+            permanent: false,
+        },
+        }
     }
-}
+    
+    const { session } = cookie;
+    const { token, user } = JSON.parse(session);
+    const episodesService = new EpisodesService(token)
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-    const { id } = ctx.params;
-    let ep = null
-    // const http = new HttpService()
-
-    await api.get(`/episodes/${id}`)
-        .then(async res => {
-            ep = res.data.episode
-        })
+    const ep = await episodesService.getOneEpisodeById(user.id, id as string)
 
     if (!ep) {
         return {
@@ -100,16 +100,16 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }
     
     const episode = {
-        id: ep.id,
+        id: ep._id,
         title: ep.title,
-        thumbnail: ep.image,
-        members: "Banza",
-        publishedAt: format(new Date(ep.published._seconds * 1000), 'd MMM yy', {locale: ptBR}),
-        duration: 0,
-        durationString: secToTimeString(0),
+        thumbnail: ep.thumbnail,
+        members: ep.members,
+        publishedAt:  format(new Date(ep.releaseDate), 'd MMM yy', {locale: ptBR}),
+        duration: ep.audioLength,
+        durationString: secToTimeString(ep.audioLength),
         description: ep.description,
-        url: ep.link,
-        avaliation: ep.avaliation || 0
+        url: ep.audioUrl,
+        avaliation: 0
     }
 
     return {

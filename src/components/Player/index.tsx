@@ -11,8 +11,6 @@ import { secToTimeString } from '../../utils/timeMsToDateString';
 import { Avaliation } from '../Avaliation';
 import { useSession } from '../../contexts/SessionContext';
 
-// import { HttpService } from '../../services/api';
-
 export function Player() {
   const { 
     episodeList, 
@@ -34,7 +32,6 @@ export function Player() {
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
   const {session} = useSession();
-  // const api = new HttpService()
   const [currentWindowSize, setCurrentWindowSize] = useState(0)
 
   
