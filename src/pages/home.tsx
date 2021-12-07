@@ -112,7 +112,10 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
                     <a >{episode.title}</a> 
                   
                   </Link>
-                  <p>{episode.title}</p>
+                  <p 
+                    className={styles.episodeDetails__description} 
+                    dangerouslySetInnerHTML={{__html: episode.description}}
+                  />
                   <span>{episode.publishedAt}</span>
                   <span><MdStarBorder/>{episode.avaliation}</span>
 

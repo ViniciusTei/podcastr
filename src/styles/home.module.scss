@@ -15,6 +15,7 @@
     height: 100%;
     overflow-y: auto;
     flex: 1;
+    padding-right: .5rem;
 }
 
 .latestEpisodes {
@@ -43,6 +44,12 @@
             .episodeDetails {
                 flex: 1;
                 margin-left: 1rem;
+
+                .episodeDetails__description {
+                    max-width: 500px;
+                    text-overflow: ellipsis;
+                    height: 2rem;
+                }
 
                 a {
                     display: flex;
