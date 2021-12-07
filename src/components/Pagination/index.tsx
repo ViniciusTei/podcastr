@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { BsChevronLeft, BsChevronRight, BsDash } from 'react-icons/bs';
 
 interface Pagination {
   currentPage: number;
@@ -16,9 +16,17 @@ export default function Pagination({
 
   return (
     <div className={styles.container}>
-      <BsChevronLeft onClick={handlePreviousPage}/>
+      {currentPage === 1 ? (
+        <BsDash />
+      ) : (
+        <BsChevronLeft onClick={handlePreviousPage}/>
+      )}
       <span>{currentPage} / {totalPages}</span>
-      <BsChevronRight onClick={handleNextPage}/>
+      {currentPage === totalPages ? (
+        <BsDash />
+      ) : (
+        <BsChevronRight onClick={handleNextPage}/>
+      )}
     </div>
   )
 }
