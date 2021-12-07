@@ -121,6 +121,22 @@
 
 .allEpisodes {
     padding-bottom: 2rem;
+    position: relative;
+
+    .table_head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 1rem;
+    }
+
+    .loading_container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); 
+    }
+
     table {
         width: 100%;
 

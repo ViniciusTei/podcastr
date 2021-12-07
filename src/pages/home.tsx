@@ -19,7 +19,9 @@ import styles from '../styles/home.module.scss';
 //icons
 import { MdStarBorder } from 'react-icons/md'
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Pagination from '../components/Pagination';
+import { Loading } from '../components/Loading';
 
 interface Episode {
   id: string;
@@ -37,14 +39,48 @@ interface Episode {
 interface HomeProps {
   allEpisodes:  Array<Episode>
   latestEpisodes:  Array<Episode>
+  totalPages: number
+  page: number
 }
 
-export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
-  const { playList } = usePlayer()
-  const { session } = useSession()
-  const router = useRouter()
+export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: HomeProps) {
+  const { playList } = usePlayer();
+  const { session } = useSession();
+  const [currentPage, setCurrentPage] = useState(page);
+  const [lastPage, setLastPage] = useState(totalPages);
+  const [episodes, setEpisodes] = useState(allEpisodes);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const episodesService = new EpisodesService(session?.token);
 
-  const episodeList = [...latestEpisodes, ...allEpisodes]
+  const episodeList = [...latestEpisodes, ...allEpisodes];
+
+  async function fetchEpisodes(page: number) {
+    setLoading(true)
+    const response = await episodesService.getEpisodes(session.user.id, page);
+    setLastPage(response.totalPages)
+    setCurrentPage(response.page)
+    const data = response.data.map((ep, epIdx)=> {
+      if(response.data.indexOf(ep) == epIdx) {
+       return {
+         id: ep._id,
+         title: ep.title,
+         thumbnail: ep.thumbnail,
+         members: ep.members,
+         publishedAt: format(new Date(ep.releaseDate), 'd MMM yy', {locale: ptBR}),
+         duration: ep.audioLength,
+         durationString: secToTimeString(ep.audioLength),
+         description: ep.description,
+         url: ep.audioUrl,
+         avaliation: 0
+       }
+      }
+       
+    })
+    setEpisodes(data)
+    setCurrentPage(page)
+    setLoading(false)
+  }
   
   useEffect(() => {
     if (!session) {
@@ -91,7 +127,24 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
       </section>
 
       <section className={styles.allEpisodes}>
-        <h2>Todos episódios</h2>
+        <div className={styles.table_head}>
+          <h2>Todos episódios</h2>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={lastPage}
+            handleNextPage={() => {
+              if (currentPage < lastPage) {
+                fetchEpisodes(currentPage + 1)
+                
+              }
+            }}
+            handlePreviousPage={() => {
+              if (currentPage > 1) {
+                fetchEpisodes(currentPage - 1)
+              }
+            }}
+          />
+        </div>
         <table cellSpacing={0}>
           <thead>
             <tr>
@@ -104,7 +157,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
             </tr>
           </thead>
           <tbody>
-            {allEpisodes.map((episode, index) => {
+            {episodes.map((episode, index) => {
               return (
                 <tr key={episode.id}>
                   <td style={{width: 72 }}>
@@ -135,7 +188,12 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
             })}
           </tbody>
         </table>
+        {loading && (
+          <div className={styles.loading_container}>
+            <Loading/>
 
+          </div>
+        )}
       </section>
       </div>
     </div>
@@ -161,8 +219,8 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
   
   const response = await episodesService.getMostRecentEpisodes(user.id)
 
-  episodes = response.map((ep, epIdx)=> {
-   if(response.indexOf(ep) == epIdx) {
+  episodes = response.data.map((ep, epIdx)=> {
+   if(response.data.indexOf(ep) == epIdx) {
     return {
       id: ep._id,
       title: ep.title,
@@ -184,7 +242,9 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
   return {
     props: {
       allEpisodes,
-      latestEpisodes
+      latestEpisodes,
+      page: response.page,
+      totalPages: response.totalPages
     }
   }
 }
