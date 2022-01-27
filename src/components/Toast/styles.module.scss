@@ -1,0 +1,48 @@
+@keyframes enter {
+  0% {
+    left: -120px;
+  }
+
+  100% {
+    left: 1rem;
+  }
+   
+}
+
+@keyframes out {
+  0% {
+    left: 1rem;
+  }
+
+  100% {
+    left: -120px;
+  }
+   
+}
+.toast_container {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  min-width: 120px;
+  z-index: 9999;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.enter_animation {
+  animation: enter 400ms ease-in;
+}
+
+.leave_animation {
+  animation: out 400ms ease-in;
+}
+
+.success {
+  background: var(--green-500);
+  color: #fff;
+}
+
+.error {
+  background: var(--red-500);
+  color: #fff;
+}
