@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import styles from './styles.module.scss';
 import { MdClose } from 'react-icons/md';
+import useClickOutside from '../../hooks/useClickOutside';
 
 interface Modal {
     isOpen: boolean
@@ -10,11 +11,14 @@ interface Modal {
 }
 
 export function Modal({title = '', isOpen, handleClose, children}: Modal) {
+    const modalRef = useRef<HTMLDivElement>(null)
 
+    useClickOutside(modalRef, handleClose)
+    
     return (
         isOpen &&
         <div className={styles.container}>
-            <div className={styles.modal}>
+            <div ref={modalRef} className={styles.modal}>
                 <div className={styles.modalHeader}>
                     <strong>{title}</strong>
                     <MdClose onClick={handleClose}/>
