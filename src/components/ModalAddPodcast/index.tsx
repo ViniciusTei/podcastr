@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useSession } from "../../contexts/SessionContext"
+import { useToast } from "../../contexts/ToastContext"
 import PodcastService from "../../services/podcastsService"
+import ErrorHandler from "../../utils/errorHandler"
 
 import { Loading } from "../Loading"
 import { Modal } from "../Modal"
@@ -12,17 +14,33 @@ export function ModalAddPodcast({isModalAddPodcastOpen, setIsModalAddPodcastOpen
   const [feedRssLink, setFeedRssLink] = useState('')
   const [loading, setLoading] = useState(false)
   const podcastsService = new PodcastService(session.token)
+  const { toggleToast } = useToast()
   
   const handleAddPodcast = async () => {
-    if(feedRssLink) {
+    try {
+      if(feedRssLink) {
         setLoading(true)
         const response = await podcastsService.createPodcast(session.user.id, feedRssLink)
+        toggleToast({
+          message: 'Seu podcast foi adicionado!',
+          type: 'success'
+        })
         console.log(response)
         setLoading(false)
         return
+      } else {
+        toggleToast({
+          message: 'Você precisa adicionar um feed rss!',
+          type: 'error',
+          timeMsToClose: 5000
+        })
+      }
+    } catch (error) {
+      setLoading(false)
+      setFeedRssLink('')
+      ErrorHandler(error, toggleToast)
     }
-
-    alert('Insira um link!')
+    
   }
 
   return(
