@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { Loading } from '../components/Loading';
+import { NoContent } from '../components/NoContentPage';
 
 interface Episode {
   id: string;
@@ -94,110 +95,118 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
         <title>Home | 🎧 Podcastr</title>
       </Head>
       <div className={styles.episodesPlaylist}>
-      <section className={styles.latestEpisodes}>
-        <h2>Últimos lançamentos</h2>
-        <ul>
-          {latestEpisodes.map((episode, index) => {
-            return (
-              <li key={episode.id}>
-                <Image 
-                  src={episode.thumbnail} 
-                  alt="Imagem do episódio" 
-                  objectFit="cover"
-                  width={192} 
-                  height={192} 
-                />
-                <div className={styles.episodeDetails}>
-                  <Link href={`/episode/${episode.id}`}>
-                    <a >{episode.title}</a> 
-                  
-                  </Link>
-                  <p 
-                    className={styles.episodeDetails__description} 
-                    dangerouslySetInnerHTML={{__html: episode.description}}
-                  />
-                  <span>{episode.publishedAt}</span>
-                  <span><MdStarBorder/>{episode.avaliation}</span>
-
-                </div>
-                <button type="button" onClick={() => playList(episodeList, index)}>
-                  <img src="/play-green.svg" alt="Tocar ep"/>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
-
-      <section className={styles.allEpisodes}>
-        <div className={styles.table_head}>
-          <h2>Todos episódios</h2>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            handleNextPage={() => {
-              if (currentPage < lastPage) {
-                fetchEpisodes(currentPage + 1)
-                
-              }
-            }}
-            handlePreviousPage={() => {
-              if (currentPage > 1) {
-                fetchEpisodes(currentPage - 1)
-              }
-            }}
-          />
-        </div>
-        <table cellSpacing={0}>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Podcast</th>
-              <th>Integrantes</th>
-              <th>Data</th>
-              <th>Avaliação</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {episodes.map((episode, index) => {
+      {episodeList.length > 0 ?
+        <>
+        <section className={styles.latestEpisodes}>
+          
+          <h2>Últimos lançamentos</h2>
+          <ul>
+            {latestEpisodes.map((episode, index) => {
               return (
-                <tr key={episode.id}>
-                  <td style={{width: 72 }}>
-                    <Image 
-                      width={120}
-                      height={120}
-                      src={episode.thumbnail}
-                      alt={episode.title}
-                      objectFit="cover"
-                    />
-                  </td>
-                  <td>
+                <li key={episode.id}>
+                  <Image 
+                    src={episode.thumbnail} 
+                    alt="Imagem do episódio" 
+                    objectFit="cover"
+                    width={192} 
+                    height={192} 
+                  />
+                  <div className={styles.episodeDetails}>
                     <Link href={`/episode/${episode.id}`}>
-                      <a>{episode.title}</a>
+                      <a >{episode.title}</a> 
                     
                     </Link>
-                  </td>
-                  <td>{episode.members}</td>
-                  <td style={{width: 100}}>{episode.publishedAt}</td>
-                  <td style={{textAlign: 'center'}}><MdStarBorder/>{episode.avaliation.toFixed(2)}</td>
-                  <td>
-                    <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
-                      <img src="/play-green.svg" alt=""/>
-                    </button>
-                  </td> 
-                </tr>
+                    <p 
+                      className={styles.episodeDetails__description} 
+                      dangerouslySetInnerHTML={{__html: episode.description}}
+                    />
+                    <span>{episode.publishedAt}</span>
+                    <span><MdStarBorder/>{episode.avaliation}</span>
+
+                  </div>
+                  <button type="button" onClick={() => playList(episodeList, index)}>
+                    <img src="/play-green.svg" alt="Tocar ep"/>
+                  </button>
+                </li>
               )
             })}
-          </tbody>
-        </table>
-        {loading && (
-          <div className={styles.loading_container}>
-            <Loading/>
+          </ul>
+        </section>
 
+        <section className={styles.allEpisodes}>
+          <div className={styles.table_head}>
+            <h2>Todos episódios</h2>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={lastPage}
+              handleNextPage={() => {
+                if (currentPage < lastPage) {
+                  fetchEpisodes(currentPage + 1)
+                  
+                }
+              }}
+              handlePreviousPage={() => {
+                if (currentPage > 1) {
+                  fetchEpisodes(currentPage - 1)
+                }
+              }}
+            />
           </div>
-        )}
-      </section>
+          <table cellSpacing={0}>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Podcast</th>
+                <th>Integrantes</th>
+                <th>Data</th>
+                <th>Avaliação</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {episodes.map((episode, index) => {
+                return (
+                  <tr key={episode.id}>
+                    <td style={{width: 72 }}>
+                      <Image 
+                        width={120}
+                        height={120}
+                        src={episode.thumbnail}
+                        alt={episode.title}
+                        objectFit="cover"
+                      />
+                    </td>
+                    <td>
+                      <Link href={`/episode/${episode.id}`}>
+                        <a>{episode.title}</a>
+                      
+                      </Link>
+                    </td>
+                    <td>{episode.members}</td>
+                    <td style={{width: 100}}>{episode.publishedAt}</td>
+                    <td style={{textAlign: 'center'}}><MdStarBorder/>{episode.avaliation.toFixed(2)}</td>
+                    <td>
+                      <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
+                        <img src="/play-green.svg" alt=""/>
+                      </button>
+                    </td> 
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          
+          
+          {loading && (
+            <div className={styles.loading_container}>
+              <Loading/>
+
+            </div>
+          )}
+        
+        </section>
+      </> : <NoContent />
+      }
       </div>
     </div>
   )
@@ -227,7 +236,7 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
       }
     }
   }
-  
+
   const { token, user } = sessionParsed;
   const episodesService = new EpisodesService(token)
   let episodes = []
