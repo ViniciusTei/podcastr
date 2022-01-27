@@ -1,3 +1,25 @@
+@keyframes rotateX {
+    0% {
+        transform: rotateX(-90deg);
+        left: 0;
+    }
+    100% {
+        transform: translate(-50%,-50%);
+        left: 50%;
+    }
+}
+
+@keyframes rotateBack {
+    0% {
+        transform: translate(-50%,-50%);
+        left: 50%;
+    }
+    100% {
+       
+        transform: rotateX(-90deg);
+        left: 0;
+    }
+}
 .container {
     position: fixed;
     z-index: 1; /* Sit on top */
@@ -9,9 +31,6 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .modal {
@@ -19,7 +38,20 @@
     max-width: 700px;
     padding: 1rem .5rem;
     border-radius: .25rem;
-    min-width: 400px;
+    max-width: 400px;
+    transform-origin: top center;
+    position: sticky;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.enterModal {
+    animation: rotateX 300ms ease-in-out forwards;
+}
+
+.backModal {
+    animation: rotateBack 300ms ease-in-out forwards;
 }
 
 .modalHeader {
