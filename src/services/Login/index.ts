@@ -11,15 +11,11 @@ export default class LoginService extends Api {
   }
 
   async login({ email, password }: UserCredentials) {
-    try {
-      const login = await this.api.post('/login', { email, password });
+    const login = await this.api.post('/login', { email, password });
   
-      const { token, user } = login.data
-  
-      return { token, user };
-    } catch (error) {
-      return null
-    }
+    const { token, user } = login.data
+
+    return { token, user };
   }
 }
 

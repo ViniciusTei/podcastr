@@ -29,7 +29,7 @@ export default function ToastProvider({children}: { children: ReactNode }) {
       setTimeout(() => {
         setIsClosing(false)
       }, 400)
-    } , toast.timeMsToClose ? toast.timeMsToClose : 1000)
+    } , toast.timeMsToClose ? toast.timeMsToClose : 2000)
   }
 
   return (

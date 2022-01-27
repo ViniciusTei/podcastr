@@ -18,6 +18,16 @@
       font-weight: 200;
       margin: 4rem 0;
   }
+
+  .create_user_link {
+    text-decoration: none;
+    color: var(--gray-300);
+    font-size: 0.75rem;
+  }
+
+  .create_user_link:hover {
+    color: var(--purple-300);
+  }
 }
 
 .footer {

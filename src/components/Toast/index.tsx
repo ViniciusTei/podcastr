@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 
 interface Toast {
@@ -7,6 +8,7 @@ interface Toast {
 }
 
 export function Toast({ message, type, isLeaving }: Toast) {
+
   return (
     <div 
     
