@@ -1,28 +1,58 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Loading } from '../components/Loading';
-import { useSession } from '../contexts/SessionContext';
 import { useToast } from '../contexts/ToastContext';
+import UsersService from '../services/Users';
 import styles from '../styles/login.module.scss';
 
-export default function Login() {
-    const { session, login } = useSession();
+function checkValidation(value?: string) {
+  if (!value) {
+    return false
+  }
+
+  if (value === '') {
+    return false
+  }
+
+  return true
+}
+
+export default function Create() {
+    const userService = new UsersService()
     const emailRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
+    const nameRef = useRef<HTMLInputElement>(null)
     const [loading, setLoading] = useState(false)
-    const router = useRouter();
+    const router = useRouter()
     const { toggleToast } = useToast()
 
-    async function handleLogin() {
-      const email = emailRef.current.value
-      const password = passwordRef.current.value
-      
+    async function handleCreate() {
       try {
-        await login(email, password)
-        
+        const email = emailRef.current.value
+        const password = passwordRef.current.value
+        const name = nameRef.current.value
+
+        if (!checkValidation(email) || !checkValidation(password) || !checkValidation(name)) {
+          toggleToast({
+            message: 'You must add a valid input',
+            type: 'error'
+          })
+
+          return 
+        }
+
+        setLoading(true)
+        await userService.create({email, password, name})
+        setLoading(false)
+        toggleToast({
+          message: 'User created!',
+          type: 'success'
+        })
+        router.push('/login')
       } catch (error) {
+        setLoading(false)
         toggleToast({
           message: error.response.data.message,
           type: 'error'
@@ -30,12 +60,6 @@ export default function Login() {
       }
     }
 
-    useEffect(() => {
-        if(session) {
-            setLoading(true)
-            router.push('/home')
-        }
-    }, [session])
 
     if(loading) {
         return (
@@ -55,9 +79,18 @@ export default function Login() {
     return (
         <div className={styles.pageContainer}>
             <Head>
-                <title>Login | 🎧 Podcastr</title>
+                <title>Register | 🎧 Podcastr</title>
             </Head>
             <section className={styles.pageContent}>
+                <div className={styles.input}>
+                  <label htmlFor="name">Nome</label>
+                  <input 
+                    type="text"
+                    placeholder="Jhon Doe"
+                    name="name"
+                    ref={nameRef}
+                  />
+                </div>
                 <div className={styles.input}>
                   <label htmlFor="email">Email</label>
                   <input 
@@ -77,12 +110,12 @@ export default function Login() {
                 </div>
                 <button
                   type="button"
-                  onClick={handleLogin}
+                  onClick={async () => await handleCreate()}
                   className={styles.btn_login}
-                >Entrar</button>
-                <Link href="/create">
+                >Criar conta</button>
+                <Link href="/login">
                   <a className={styles.create_user_link}>
-                    Não tem uma conta? Clique para criar
+                    Voltar
                   </a>
                 </Link>
             </section>

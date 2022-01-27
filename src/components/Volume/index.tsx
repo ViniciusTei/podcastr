@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from './styles.module.scss';
 import { BsFillVolumeUpFill, BsVolumeDownFill, BsVolumeMuteFill } from 'react-icons/bs';
+import useClickOutside from '../../hooks/useClickOutside';
 interface Volume {
   isDisabled: boolean;
   onVolumeChange: (amount: number) => void;
@@ -11,6 +12,7 @@ interface Volume {
 export default function Volume({ isDisabled, onVolumeChange }: Volume) {
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const [volume, setVolume] = useState(1)
+  const sliderRef = useRef<HTMLDivElement>(null)
 
   function handleVolumeChange(amount: number) {
     setVolume(amount)
@@ -20,10 +22,13 @@ export default function Volume({ isDisabled, onVolumeChange }: Volume) {
   function handleOpenSlider() {
     setIsSliderOpen(!isSliderOpen)
   }
+
+  useClickOutside(sliderRef, () => setIsSliderOpen(false))
+
   return (
     <div className={styles.container}>
       {isSliderOpen && (
-        <div className={styles.slider}>
+        <div ref={sliderRef} className={styles.slider}>
           <Slider
             trackStyle={{backgroundColor: '#808080'}}
             railStyle={{backgroundColor: '#F7F8FA '}}
