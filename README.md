@@ -21,6 +21,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 - [x] Adicionar controle de volume no Player
 - [ ] Transformar em PWA
+  - [ ] Deixar o app responsivo
+  - [ ] Adicionar o pacote next-pwa e as devidas configurações para um pwa
 - [ ] Adicionar api route para avaliar um podcast
 - [ ] Adicionar tabs para podcasts recomendados
  
