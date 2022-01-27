@@ -216,7 +216,19 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
   }
   
   const { session } = cookie;
-  const { token, user } = JSON.parse(session);
+
+  const sessionParsed =  JSON.parse(session);
+
+  if (!sessionParsed) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+  
+  const { token, user } = sessionParsed;
   const episodesService = new EpisodesService(token)
   let episodes = []
   

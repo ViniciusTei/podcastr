@@ -13,7 +13,6 @@ export default function Home() {
     useEffect(() => {
         if(session) {
             setLoading(true)
-            console.log('redirect')
             router.push('/home')
         }
     }, [session])
