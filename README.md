@@ -20,7 +20,7 @@ Um app para ouvir podcasts cadastrados a partir de um feed rss.
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
 - [x] Adicionar controle de volume no Player
-- [ ] Corrigir issue #20
+- [x] Corrigir issue #20
 - [ ] Transformar em PWA
   - [ ] Deixar o app responsivo
   - [ ] Adicionar o pacote next-pwa e as devidas configurações para um pwa

@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { Loading } from '../components/Loading';
 import { NoContent } from '../components/NoContentPage';
+import useWindow from '../hooks/useWindowSize';
 
 interface Episode {
   id: string;
@@ -53,6 +54,8 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const episodesService = new EpisodesService(session?.token);
+  const window = useWindow();
+  const [isMobile, setIsMobile] = useState(false)
 
   const [episodeList, setEpisodeList] = useState([...latestEpisodes, ...allEpisodes])
 
@@ -98,6 +101,14 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
       router.push('/')
     }
   }, [session])
+
+  useEffect(() => {
+    if(window.width < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }, [window])
   
   return (
     <div className={styles.homepage}>
@@ -114,13 +125,15 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
             {latestEpisodes.map((episode, index) => {
               return (
                 <li key={episode.id}>
-                  <Image 
-                    src={episode.thumbnail} 
-                    alt="Imagem do episódio" 
-                    objectFit="cover"
-                    width={192} 
-                    height={192} 
-                  />
+                  <div className={styles.image_container}>
+                    <Image 
+                      src={episode.thumbnail} 
+                      alt="Imagem do episódio" 
+                      objectFit="cover"
+                      layout="fill" 
+                    />
+                  </div>
+                  
                   <div className={styles.episodeDetails}>
                     <Link href={`/episode/${episode.id}`}>
                       <a >{episode.title}</a> 
@@ -167,9 +180,9 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
               <tr>
                 <th></th>
                 <th>Podcast</th>
-                <th>Integrantes</th>
+                {isMobile ? null : <th>Integrantes</th>}
                 <th>Data</th>
-                <th>Avaliação</th>
+                {isMobile ? null : <th>Avaliação</th>}
                 <th></th>
               </tr>
             </thead>
@@ -192,9 +205,9 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
                       
                       </Link>
                     </td>
-                    <td>{episode.members}</td>
+                    {isMobile ? null : <td>{episode.members}</td>}
                     <td style={{width: 100}}>{episode.publishedAt}</td>
-                    <td style={{textAlign: 'center'}}><MdStarBorder/>{episode.avaliation.toFixed(2)}</td>
+                    {isMobile ? null : <td style={{textAlign: 'center'}}><MdStarBorder/>{episode.avaliation.toFixed(2)}</td>}
                     <td>
                       <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
                         <img src="/play-green.svg" alt=""/>
