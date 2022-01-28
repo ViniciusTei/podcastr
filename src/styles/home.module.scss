@@ -19,15 +19,14 @@
 
 .latestEpisodes {
     overflow-x: auto;
-
+    padding: 0.5rem 0;
     h2 {
         position: sticky;
         left: 1rem;
     }
     
     &::-webkit-scrollbar {
-        width: 0;  /* Remove scrollbar space */
-        background: transparent;  /* Optional: just make scrollbar invisible */
+        display: none;
     }
 
     ul {
@@ -44,6 +43,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: min(360px, 500px);
         
             img {
                 width: 6rem;
@@ -54,9 +54,9 @@
             .episodeDetails {
                 flex: 1;
                 margin-left: 1rem;
-
+                width: 100%;
                 .episodeDetails__description {
-                    max-width: 500px;
+                    max-width: 100%;
                     text-overflow: ellipsis;
                     height: 2rem;
                 }
@@ -141,6 +141,9 @@
     position: relative;
     overflow: auto;
     max-height: calc(100vh - 385px);
+    &::-webkit-scrollbar {
+        display: none;
+    }
     .table_head {
         display: flex;
         align-items: center;
@@ -148,7 +151,7 @@
         padding-right: 1rem;
         position: sticky;
         top: 0;
-        background-color: #fff;
+        background-color: var(--gray-50);
         z-index: 1;
     }
 
