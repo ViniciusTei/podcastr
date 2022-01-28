@@ -125,13 +125,15 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
             {latestEpisodes.map((episode, index) => {
               return (
                 <li key={episode.id}>
-                  <Image 
-                    src={episode.thumbnail} 
-                    alt="Imagem do episódio" 
-                    objectFit="cover"
-                    width={192} 
-                    height={192} 
-                  />
+                  <div className={styles.image_container}>
+                    <Image 
+                      src={episode.thumbnail} 
+                      alt="Imagem do episódio" 
+                      objectFit="cover"
+                      layout="fill" 
+                    />
+                  </div>
+                  
                   <div className={styles.episodeDetails}>
                     <Link href={`/episode/${episode.id}`}>
                       <a >{episode.title}</a> 

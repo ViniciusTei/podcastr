@@ -17,6 +17,7 @@
     padding-right: .5rem;
 }
 
+
 .latestEpisodes {
     overflow-x: auto;
     padding: 0.5rem 0;
@@ -43,20 +44,26 @@
             position: relative;
             display: flex;
             align-items: center;
-            width: min(360px, 500px);
+            width: 100%;
+            max-width: 724px;
         
-            img {
-                width: 6rem;
-                height: 6rem;
-                border-radius: 1rem;
+            .image_container {
+                width: 192px;
+                height: 192px;
+                position: relative;
+                img {
+                
+                    border-radius: 1rem;
+                }
             }
+            
 
             .episodeDetails {
                 flex: 1;
                 margin-left: 1rem;
-                width: 100%;
+                width: 500px;
                 .episodeDetails__description {
-                    max-width: 100%;
+                    max-width: 500px;
                     text-overflow: ellipsis;
                     height: 2rem;
                 }
@@ -223,4 +230,31 @@
             }
         }
     }
+}
+
+
+@media screen and (max-width: 720px) {
+
+    .latestEpisodes {
+        ul {
+            li {
+                max-width: 360px;
+
+                .image_container {
+                    width: 92px;
+                    height: 92px;
+                }
+
+                .episodeDetails {
+                    .episodeDetails__description {
+                        max-width: 200px;
+                    }
+                }
+            }
+        }
+
+        
+        
+    }
+    
 }
