@@ -54,7 +54,7 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
   const router = useRouter();
   const episodesService = new EpisodesService(session?.token);
 
-  const episodeList = [...latestEpisodes, ...allEpisodes];
+  const [episodeList, setEpisodeList] = useState([...latestEpisodes, ...allEpisodes])
 
   async function fetchEpisodes(page: number) {
     setLoading(true)
@@ -78,7 +78,17 @@ export default function Home({ allEpisodes, latestEpisodes, page, totalPages }: 
       }
        
     })
-    setEpisodes(data)
+    
+
+    if (response.page === 1) {
+      setEpisodeList(data)
+      setEpisodes(data.slice(2))
+    } else {
+      setEpisodes(data)
+      setEpisodeList([...latestEpisodes, ...data])
+      
+    }
+
     setCurrentPage(page)
     setLoading(false)
   }
