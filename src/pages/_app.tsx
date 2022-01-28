@@ -14,6 +14,7 @@ import { Header } from '../components/Header';
 import { Player } from '../components/Player';
 import { Loading } from '../components/Loading';
 import useWindow from '../hooks/useWindowSize';
+import { PlayerMobile } from '../components/PlayerMobile';
 
 
 function MyApp({ Component, pageProps }) {
@@ -57,7 +58,7 @@ function MyApp({ Component, pageProps }) {
                 <Header></Header>
                 <Component {...pageProps} />
               </main>
-              {isMobilePlayerOn ? null : <Player />}
+              {isMobilePlayerOn ? <PlayerMobile /> : <Player />}
               {loading && (
                 <div className={styles.loading}>
                   <Loading size="small"/>
