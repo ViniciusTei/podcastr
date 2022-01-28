@@ -13,7 +13,7 @@ export function ModalAddPodcast({isModalAddPodcastOpen, setIsModalAddPodcastOpen
   const { session } = useSession()
   const [feedRssLink, setFeedRssLink] = useState('')
   const [loading, setLoading] = useState(false)
-  const podcastsService = new PodcastService(session.token)
+  const podcastsService = new PodcastService(session?.token)
   const { toggleToast } = useToast()
   
   const handleAddPodcast = async () => {
