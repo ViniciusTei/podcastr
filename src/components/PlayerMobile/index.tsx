@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { usePlayer } from "../../contexts/PlayerContext"
+import { useSession } from '../../contexts/SessionContext';
 import styles from './styles.module.scss';
 
 export function PlayerMobile() {
@@ -21,7 +22,8 @@ export function PlayerMobile() {
   } = usePlayer()
   const episode = episodeList[currentEpisodeIndex]
   const audioRef = useRef<HTMLAudioElement>(null)
-
+  const {session} = useSession();
+  
   function handleEpisodeEnded() {
     if(hasNext) {
       playNext()
@@ -40,6 +42,10 @@ export function PlayerMobile() {
       audioRef.current.pause()
     }
   }, [isPlaying])
+
+  if(!session) {
+    return null
+  }
 
   return (
     <div className={styles.container}>
