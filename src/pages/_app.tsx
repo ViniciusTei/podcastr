@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import PlayerProvider from '../contexts/PlayerContext';
 import SessionProvider from "../contexts/SessionContext";
 import ToastProvider from "../contexts/ToastContext";
@@ -11,14 +12,22 @@ import styles from '../styles/app.module.scss';
 //components
 import { Header } from '../components/Header';
 import { Player } from '../components/Player';
-import Head from 'next/head';
 import { Loading } from '../components/Loading';
+import useWindow from '../hooks/useWindowSize';
 
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  const window = useWindow();
+  const [isMobilePlayerOn, setIsMobilePlayerOn] = useState(false)
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if(window.width < 720) {
+      setIsMobilePlayerOn(true)
+    }
+  }, [window])
 
   useEffect(() => {
       const handleStart = (url) => (url !== router.asPath) && setLoading(true);
@@ -48,7 +57,7 @@ function MyApp({ Component, pageProps }) {
                 <Header></Header>
                 <Component {...pageProps} />
               </main>
-              <Player />
+              {isMobilePlayerOn ? null : <Player />}
               {loading && (
                 <div className={styles.loading}>
                   <Loading size="small"/>
