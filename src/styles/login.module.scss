@@ -6,6 +6,13 @@
 }
 
 .pageContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 4rem;
+  height: 100%;
   .image {
       width: 450px;
       height: auto;
@@ -75,26 +82,3 @@
     filter: brightness(.7);
   }
 }
-
-@media screen and (min-width: 1080px) {
-  
-  .pageContent {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 2rem 4rem;
-      height: 100%;
-      
-      
-  }
-  
-  
-}
-
-@media screen and (min-width: 720px) {
-  
-}
-
-

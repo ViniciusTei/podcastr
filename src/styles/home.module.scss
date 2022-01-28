@@ -1,8 +1,7 @@
 .homepage {
-    padding: 0 0 0 4rem;
+    padding: 0 0 0 1rem;
     height: calc(100vh - 6.5rem);
     display: flex;
-    
     h2 {
         margin-top: 3rem;
         margin-bottom: 1.5rem;
@@ -13,13 +12,23 @@
 
 .episodesPlaylist {
     height: 100%;
-    overflow-y: auto;
+    overflow-y: hidden;
     flex: 1;
     padding-right: .5rem;
 }
 
 .latestEpisodes {
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    h2 {
+        position: sticky;
+        left: 1rem;
+    }
     
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     ul {
         list-style: none;
         display: grid;
@@ -34,6 +43,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: min(360px, 500px);
         
             img {
                 width: 6rem;
@@ -44,9 +54,9 @@
             .episodeDetails {
                 flex: 1;
                 margin-left: 1rem;
-
+                width: 100%;
                 .episodeDetails__description {
-                    max-width: 500px;
+                    max-width: 100%;
                     text-overflow: ellipsis;
                     height: 2rem;
                 }
@@ -129,12 +139,20 @@
 .allEpisodes {
     padding-bottom: 2rem;
     position: relative;
-
+    overflow: auto;
+    max-height: calc(100vh - 385px);
+    &::-webkit-scrollbar {
+        display: none;
+    }
     .table_head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding-right: 1rem;
+        position: sticky;
+        top: 0;
+        background-color: var(--gray-50);
+        z-index: 1;
     }
 
     .loading_container {
@@ -146,7 +164,7 @@
 
     table {
         width: 100%;
-
+        
         th, td {
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--grey-100);
