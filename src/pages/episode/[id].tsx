@@ -88,33 +88,42 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     const { token, user } = JSON.parse(session);
     const episodesService = new EpisodesService(token)
 
-    const ep = await episodesService.getOneEpisodeById(user.id, id as string)
+    try {
+        const ep = await episodesService.getOneEpisodeById(user.id, id as string)
 
-    if (!ep) {
+        if (!ep) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            }
+        }
+        
+        const episode = {
+            id: ep._id,
+            title: ep.title,
+            thumbnail: ep.thumbnail,
+            members: ep.members,
+            publishedAt:  format(new Date(ep.releaseDate), 'd MMM yy', {locale: ptBR}),
+            duration: ep.audioLength,
+            durationString: secToTimeString(ep.audioLength),
+            description: ep.description,
+            url: ep.audioUrl,
+            avaliation: 0
+        }
+
+        return {
+            props: {
+                episode
+            }
+        }
+    } catch (error) {
         return {
             redirect: {
             destination: '/',
             permanent: false,
             },
-        }
-    }
-    
-    const episode = {
-        id: ep._id,
-        title: ep.title,
-        thumbnail: ep.thumbnail,
-        members: ep.members,
-        publishedAt:  format(new Date(ep.releaseDate), 'd MMM yy', {locale: ptBR}),
-        duration: ep.audioLength,
-        durationString: secToTimeString(ep.audioLength),
-        description: ep.description,
-        url: ep.audioUrl,
-        avaliation: 0
-    }
-
-    return {
-        props: {
-            episode
         }
     }
 }

@@ -34,8 +34,7 @@ export default class EpisodesService extends Api {
   }
 
   async getOneEpisodeById(userId: string, episodeId: string): Promise<Episode> {
-    const body = { episodeId }
-    const response = await this.api.get<Episode>(`/episodes/${userId}/detail`, { data: body })
+    const response = await this.api.get<Episode>(`/episodes/${userId}/detail?episodeId=${episodeId}`)
     return response.data
   }
 }
