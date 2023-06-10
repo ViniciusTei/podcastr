@@ -6,12 +6,12 @@ export default class Api {
     constructor(token?: string) {
         if (token) {
             this.api = axios.create({
-                baseURL: 'http://165.232.126.168/v1',
+                baseURL: 'https://podclass-apii-3fedvep5fq-rj.a.run.app/v1',
                 headers: { Authorization: `Bearer ${token}` }
             })
         } else {
             this.api = axios.create({
-                baseURL: 'http://165.232.126.168/v1',
+                baseURL: 'https://podclass-apii-3fedvep5fq-rj.a.run.app/v1',
             })
         }
         
