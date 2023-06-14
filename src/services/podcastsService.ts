@@ -7,7 +7,7 @@ export default class PodcastService extends Api{
   }
 
   async createPodcast(userId: string, feed_url: string) {
-    const response = await this.api.post(`/podcasts/${userId}`, {feed_url: feed_url})
+    const response = await this.api.post(`/podcasts/${userId}`, {rssFeed: feed_url})
 
     return response.data
   }
